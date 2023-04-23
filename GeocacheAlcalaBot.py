@@ -1,4 +1,5 @@
 import logging
+import json
 
 from telegram import Update, ForceReply, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, CallbackQueryHandler
@@ -7,109 +8,182 @@ logger = logging.getLogger(__name__)
 
 BOT_TOKEN = "6236263968:AAEGJ7tA9buQD0fchSvouKv0xOc0oQKAgCA"
 
-current_stage = "start"
-# Store bot screaming status
-#screaming = False
+with open('history_metadata.json', 'r') as history_file:
+    data = history_file.read()
+history_data = json.loads(data)
 
-# Pre-assign menu text
-WELCOME_MENU_TEXT = "<b>Hola, soy GeocacheBot</b>\n\nEncantado de conocerte. Mi propósito es guiarte a lo largo de esta aventura hasta entontrar el Geocaché final. Pulsa el siguiente botón para comenzar la historia. \n\nUna vez que lo pulses, el tiempo comenzará a contar, así que asegúrate de estar listo para emprender esta aventura antes de hacerlo."
-HISTORY_MENU_TEXT = """<b>El Secreto del Relojero</b>
-\n\nEn los años 80, la tecnología digital comenzaba a acaparar toda la atención. Hacía 10 años que los relojes digitales habían llegado para reemplazar al analógico y sus anticuadas manecillas. Esto estaba llevando a la ruina al joven Anthony Benbig. Un excelente relojero de procedencia inglesa asentado en Sevilla que veía como caían sus ventas y su fortuna se reducía drásticamente. La desesperación cambió su carácter y lo llevó a buscar nuevos proyectos. Se volvió taciturno y confinado en el taller que heredó tras la jubilación de su padre,  se topó con un descubrimiento que revolucionaría su escabroso futuro. Su padre, preocupado por su huraño hijo, entró al almacén y lo sorprendió fuera de sí con un deplorable aspecto y se percató de que estaba tramando algo turbio. Tras encontrarse con la negativa de parar ese peligroso proyecto, optó por lo sano y negó la entrada a las instalaciones. El padre no sabía sus verdaderas intenciones, pero no lo dudó tras la negativa a darle explicación alguna y su preocupante estado. Finalmente, denunció ante las autoridades a su hijo, quien sufrió una insoportable persecución que lo llevó a desaparecer. Pero no iba a desistir pués tenía algo muy importante entre manos. Esto terminó por romper la relación con su severo padre, que además de haberle hecho una infancia insoportable para convertirlo en el mejor relojero, ahora le truncaba su mayor proyecto.
-\nEn su tiempo libre, Anthony había sido un entusiasta espeleólogo y esto le había llevado a conocer el subsuelo de Alcalá de Guadaíra como la palma de su mano. A lo largo de los años se le ha localizado por está zona. Sabemos que se instaló en alguna gruta y que continuó trabajando en su plan.
-\nLa obra de Anthony es nada más y nada menos que una máquina del tiempo. Al principio, sus intenciones serían buenas, pero después de sufrir semejante acoso y de vivir apartado de la sociedad en las sombras, tenemos indicios de que sus pretensiones pueden poner en peligro la vida tal y como la conocemos. 
-\nAquí empieza vuestro cometido. No tenéis de que preocuparos, pues vuestra actuación se realizará en la superficie. Un grave problema de los viajes en el tiempo es el cambio de la orografía. Donde hoy hay un cerro, en el pasado no lo había o donde hoy hay un puente, en el pasado había un acantilado. Esto significa que puede aparecer bajo tierra y morir sepultado o sobre 8 o 10 metros de altura y morir en la caida. Pero creemos que ha conseguido corregir esto mediante algún tipo de 'autonivelante". Por ello los portales están en la superficie.
-\nDesconocemos la forma exacta como lo hace, pero suponemos que de algun modo emplaza cada viaje en el tiempo en lugares claves y cada salto deja un portal que tenéis que cerrar. Para ello debéis encontrarlo, recopilar algunos datos y por último, cerrarlo.Os llegará un listado de los puntos donde ustedes tendréis que actuar. Tenemos varios equipos como el vuestro en distintos emplazamientos, pues el tiempo apremia. 
-\nAnthony está perfeccionando la máquina y creemos que su objetivo ahora es viajar a mediados de 1900 y atentar contra la vida de su padre. Esto crearía una paradoja temporal de consecuencias catastróficas."""
-CACHE1_MENU_TEXT1 = """<b>Portal 1</b>
-\n\nDesde aquí se puede divisar la ladera del cerro de la fortaleza que en su dia se llamó Qalat Yabir, por su origen almohade. La construcción de este castillo está datada en el siglo XI, aunque muy probablemente, este enclave ya contaba con alguna fortificación 2 siglos antes.
-\nPara conseguir avanzar, debes responder a un par de preguntas. Veamos:
-\n¿Qué rey le dió su configuración actual tras la reconquista en el siglo XIII? 
-"""
-CACHE1_MENU_TEXT2 ="""Genial! Ahora esta:
-\n¿Cuántas torres lo flanquean?
-"""
+user_data = []
 
-# Pre-assign button text
-START_GAME_BUTTON_LABEL = "¡Comenzar la aventura!"
-START_GAME_BUTTON_DATA = "start"
-CONTINUE_BUTTON_LABEL = "Continuar"
-CONTINUE_BUTTON_DATA = "continue"
-CACHE1_BUTTON_LABEL = "Caché 1"
-CACHE1_BUTTON_DATA = "cache1"
-#BACK_BUTTON = "Back"
-#TUTORIAL_BUTTON = "Tutorial"
+def start(update: Update, context: CallbackContext):
+    """
+    This handler sends a menu with the text and inline buttons of the welcome message
+    """
+    chat_id = update.effective_chat.id
 
-# Build keyboards
-WELCOME_MENU_MARKUP = InlineKeyboardMarkup([[
-    InlineKeyboardButton(START_GAME_BUTTON_LABEL, callback_data=START_GAME_BUTTON_DATA)
-]])
-HISTORY_MENU_MARKUP = InlineKeyboardMarkup([
-    [InlineKeyboardButton(CONTINUE_BUTTON_LABEL, callback_data=CONTINUE_BUTTON_DATA)],
-    #[InlineKeyboardButton(TUTORIAL_BUTTON, url="https://core.telegram.org/bots/api")]
-])
-CACHE1_MENU_MARKUP = InlineKeyboardMarkup([
-    #[InlineKeyboardButton(CACHE1_BUTTON_LABEL, callback_data=CACHE1_BUTTON_DATA)],
-    #[InlineKeyboardButton(TUTORIAL_BUTTON, url="https://core.telegram.org/bots/api")]
-])
+    # Check that there is not existing data for current user
+    for obj in user_data:
+        if obj.get('chat_id') == chat_id:
+            update.message.reply_text('Ya has iniciado el juego.')
+            return
 
-RESPONSE_CACHE1_1 = "Fernando III"
+    # Initiate new user_data instance with the chat_id, current step, current expected answers and pending questions 
+    user_data.append(
+    {
+        'chat_id': chat_id,
+        'current_step': 0,
+        'current_answer': None,
+        'pending_questions': []
+    })
+
+    send_next_step(update, context)
+
+def get_current_chat_data(update: Update):
+    chat_id = update.effective_chat.id
+    current_chat_data = None
+    for user in user_data:
+        if user['chat_id'] == chat_id:
+            current_chat_data = user
+    return current_chat_data
+
+def build_buttons_markup(buttons):
+    buttons_markup = []
+
+    # Generate list of markup for buttons
+    markup = None
+    for button in buttons:
+        buttons_markup.append(InlineKeyboardButton(button['label'], callback_data=int(button['target_step'])))
+    
+    # Create full markup
+    markup = InlineKeyboardMarkup([buttons_markup,])
+
+    return markup
+
 
 def button_tap(update: Update, context: CallbackContext) -> None:
     """
     This handler processes the inline buttons on the menu
     """
-    global current_stage
+    # Find data from current chat to update the step
+    chat_id = update.effective_chat.id
+    current_chat_data = None
+    for user in user_data:
+        if user['chat_id'] == chat_id:
+            current_chat_data = user
 
-    data = update.callback_query.data
-    text = ''
-    markup = None
-
-    if data == START_GAME_BUTTON_DATA:
-        text = HISTORY_MENU_TEXT
-        markup = HISTORY_MENU_MARKUP
-    elif data == CONTINUE_BUTTON_DATA:
-        text = CACHE1_MENU_TEXT1
-        markup = CACHE1_MENU_MARKUP
-
-        # Move to first stage
-        current_stage = "cache1_1"
-    #elif data == CACHE1_BUTTON_DATA:
-    #    text = "Continuará..."
-    #    markup = CACHE1_MENU_MARKUP
-
+    # Move to target step and call the update function to send the updated message
+    current_chat_data['current_step'] = int(update.callback_query.data)
     # Close the query to end the client-side loading animation
     update.callback_query.answer()
 
-    # Update message content with corresponding menu section
-    update.callback_query.message.edit_text(
-        text,
-        ParseMode.HTML,
-        reply_markup=markup
-    )
+    # Remove button
+    context.bot.edit_message_reply_markup(chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, reply_markup=None)
 
-def start(update: Update, context: CallbackContext):
-    """
-    This handler sends a menu with the inline buttons we pre-assigned above
-    """
+    send_next_step(update, context)
 
-    context.bot.send_message(
-        update.message.from_user.id,
-        WELCOME_MENU_TEXT,
-        parse_mode=ParseMode.HTML,
-        reply_markup=WELCOME_MENU_MARKUP
-    )
+def send_next_step(update: Update, context: CallbackContext):    
+    # Look for the current step data
+
+    # Find data from current chat to update the step
+    chat_id = update.effective_chat.id
+    current_chat_data = None
+    for user in user_data:
+        if user['chat_id'] == chat_id:
+            current_chat_data = user
+
+    current_chat_data['current_answer'] = None
+    current_step_data = None
+    for step in history_data:
+        if step['id'] == current_chat_data['current_step']:
+            current_step_data = step
+            break
+    if current_step_data:
+        # Update text        
+        text = "<b>"+current_step_data['title']+"</b>"+"\n\n"+current_step_data['text']
+
+        # Update buttons (if any)
+        markup = build_buttons_markup(current_step_data['buttons'])
+
+        # Send history markup (text + buttons)
+        context.bot.send_message(
+            update.effective_chat.id,
+            text,
+            parse_mode=ParseMode.HTML,
+            reply_markup=markup
+        )
+
+        # Send first question if any
+        current_chat_data['pending_questions'] = current_step_data['questions']
+        first_question = None
+        if current_chat_data['pending_questions']:
+            for question in current_chat_data['pending_questions']:
+                if question['id'] == 0:
+                    first_question = question
+                    break
+
+        if first_question:
+            current_chat_data['current_answer'] = first_question['answer']
+            current_chat_data['pending_questions'].remove(first_question)
+            send_question(update, context, first_question)
+    else:
+        # No more steps, the history is done
+        print("Step ", current_chat_data['current_step'], " not found")
 
 def answer(update: Update, context: CallbackContext) -> None:
     """Process answer."""
-    if current_stage == "start":
+    chat_id = update.effective_chat.id
+    current_chat_data = None
+    for user in user_data:
+        if user['chat_id'] == chat_id:
+            current_chat_data = user    
+
+    correct_answer = False
+    if current_chat_data == None or current_chat_data['current_step'] == 0:
+        text = "Envía /start o pulsa el botón Start abajo para iniciar el bot"
+    elif current_chat_data['current_step'] == 1:
         text = "Pulsa el botón para empezar"
-    elif current_stage == "cache1_1":
-        if update.message.text == RESPONSE_CACHE1_1:
+    elif current_chat_data['current_answer']:    
+        if update.message and update.message.text.lower() == current_chat_data['current_answer'].lower():
             text = "Genial, se vé que sabes usar Google!"
+            correct_answer = True
         else:
-            text = "¿Estás seguro?"
+            text = "¿Estás seguro? Inténtalo de nuevo"
+    elif current_chat_data['current_step'] == 4:
+        text = "El mundo te agradece tu labor evitando la catástrofe. Esperamos que lo hayas pasado bien."
+    else:
+        # No current question exists. Send default message
+        text = "Deja de charlar y manos a la obra. ¡Necesitamos tu ayuda para encontrar al Anthony!"
     update.message.reply_text(text)
 
+    if correct_answer:
+        # Check if there are pending questions
+        if len(current_chat_data['pending_questions']) > 0:
+            # Find the question with the lowest ID
+            lowest_id = current_chat_data['pending_questions'][0]['id']
+            next_question = current_chat_data['pending_questions'][0]
+            for question in current_chat_data['pending_questions']:
+                if question['id'] < lowest_id:
+                    lowest_id = question['id']
+                    next_question = question
+            
+            current_chat_data['current_answer'] = next_question['answer']
+            current_chat_data['pending_questions'].remove(next_question)
+            send_question(update, context, next_question)
+
+        else:
+            # No questions pending. Move to next step if any
+            current_chat_data['current_step'] = current_chat_data['current_step']+1
+            send_next_step(update, context)
+
+def send_question(update: Update, context: CallbackContext, question):
+
+    # Send the question to the chat
+    context.bot.send_message(
+        update.effective_chat.id,
+        question['question_text'],
+        parse_mode=ParseMode.HTML,
+        reply_markup=None
+    )  
+    
 def main() -> None:
     updater = Updater(BOT_TOKEN)
 

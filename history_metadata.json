@@ -1,0 +1,79 @@
+[
+    {
+        "id": 0,
+        "title": "Hola, soy GeocacheBot",
+        "text": "Encantado de conocerte. Mi propósito es guiarte a lo largo de esta aventura hasta entontrar el Geocaché final. Pulsa el siguiente botón para comenzar la historia. \n\nUna vez que lo pulses, el tiempo comenzará a contar, así que asegúrate de estar listo para emprender esta aventura antes de hacerlo.",
+        "questions": [],
+        "buttons":
+        [
+            {
+                "id": 1,
+                "label": "¡Comenzar la aventura!",
+                "target_step": 1
+            }
+        ]
+
+    },
+    {
+        "id": 1,
+        "title": "El Secreto del Relojero",
+        "text": "En los años 80, la tecnología digital comenzaba a acaparar toda la atención. Hacía 10 años que los relojes digitales habían llegado para reemplazar al analógico y sus anticuadas manecillas. Esto estaba llevando a la ruina al joven Anthony Benbig. Un excelente relojero de procedencia inglesa asentado en Sevilla que veía como caían sus ventas y su fortuna se reducía drásticamente. La desesperación cambió su carácter y lo llevó a buscar nuevos proyectos. Se volvió taciturno y confinado en el taller que heredó tras la jubilación de su padre,  se topó con un descubrimiento que revolucionaría su escabroso futuro. Su padre, preocupado por su huraño hijo, entró al almacén y lo sorprendió fuera de sí con un deplorable aspecto y se percató de que estaba tramando algo turbio. Tras encontrarse con la negativa de parar ese peligroso proyecto, optó por lo sano y negó la entrada a las instalaciones. El padre no sabía sus verdaderas intenciones, pero no lo dudó tras la negativa a darle explicación alguna y su preocupante estado. Finalmente, denunció ante las autoridades a su hijo, quien sufrió una insoportable persecución que lo llevó a desaparecer. Pero no iba a desistir pués tenía algo muy importante entre manos. Esto terminó por romper la relación con su severo padre, que además de haberle hecho una infancia insoportable para convertirlo en el mejor relojero, ahora le truncaba su mayor proyecto.\nLa obra de Anthony es nada más y nada menos que una máquina del tiempo. Al principio, sus intenciones serían buenas, pero después de sufrir semejante acoso y de vivir apartado de la sociedad en las sombras, tenemos indicios de que sus pretensiones pueden poner en peligro la vida tal y como la conocemos. \nAquí empieza vuestro cometido. No tenéis de que preocuparos, pues vuestra actuación se realizará en la superficie. Un grave problema de los viajes en el tiempo es el cambio de la orografía. Donde hoy hay un cerro, en el pasado no lo había o donde hoy hay un puente, en el pasado había un acantilado. Esto significa que puede aparecer bajo tierra y morir sepultado o sobre 8 o 10 metros de altura y morir en la caida. Pero creemos que ha conseguido corregir esto mediante algún tipo de 'autonivelante. Por ello los portales están en la superficie.\nDesconocemos la forma exacta como lo hace, pero suponemos que de algun modo emplaza cada viaje en el tiempo en lugares claves y cada salto deja un portal que tenéis que cerrar. Para ello debéis encontrarlo, recopilar algunos datos y por último, cerrarlo.Os llegará un listado de los puntos donde ustedes tendréis que actuar. Tenemos varios equipos como el vuestro en distintos emplazamientos, pues el tiempo apremia. \nAnthony está perfeccionando la máquina y creemos que su objetivo ahora es viajar a mediados de 1900 y atentar contra la vida de su padre. Esto crearía una paradoja temporal de consecuencias catastróficas.",
+        "questions": [],
+        "buttons":
+        [
+            {
+                "id": 1,
+                "label": "Continuar",
+                "target_step": 2
+            }
+        ]
+
+    },
+    {
+        "id": 2,
+        "title": "Portal 1: Puerta Retama",
+        "text": "Desde aquí se puede divisar la ladera del cerro de la fortaleza que en su dia se llamó Qalat Yabir, por su origen almohade. La construcción de este castillo está datada en el siglo XI, aunque muy probablemente, este enclave ya contaba con alguna fortificación 2 siglos antes. \nPara conseguir avanzar, debes responder a un par de preguntas.",
+        "questions":
+        [
+            {
+                "id": 0,
+                "question_text": "¿Qué rey le dió su configuración actual tras la reconquista en el siglo XIII?",
+                "answer":  "fernando iii"                   
+            },
+
+            {
+                "id": 1,
+                "question_text": "¿Cuántas torres lo flanquean?",
+                "answer":  "11"                   
+            }
+        ],
+        "buttons": []
+    },
+    {
+        "id": 3,
+        "title": "Portal 2: Puente ferrocarril de los panaderos",
+        "text": "Estas vías unieron Alcalá con Sevilla durante aproximadamente un siglo y desde aquí, partía el pan cada mañana hacia la capital. Dejó de funcionar en 1975",
+        "questions":
+        [
+            {
+                "id": 0,
+                "question_text": "Que dia de julio del 1962 hicieron el último viaje los 5 panaderos?",
+                "answer":  "31"                   
+            },
+
+            {
+                "id": 1,
+                "question_text": "¿Sabes el nombre popular del tren de los panaderos?",
+                "answer":  "la cochinita"                   
+            }
+        ],
+        "buttons": []
+    },
+    {
+        "id": 4,
+        "title": "Desenlace",
+        "text": "Habéis encontrado la entrada principal de la gruta. No es momento de echarse atrás, pues en el interior está la respuesta del gran enigma. Entráis agachados por la humeda galeria y pronto el techo se vuelve el doble de alto y las paredes ya no rozan vuestros hombros, pero la oscuridad es total y tenéis que encender las linternas. El olor fresco se torna nauseabundo cuando se encontráis con una sala a medio iluminar. La red de túneles continúa, pero esta habitación llama vuestra atención. Al cruzar el umbral, veís como un par de tragaluz de decenas de metros de altura, dejan ver tibiamente la supuesta maquina del tiempo. Al fin la habéis encontrado. El olor hace necesario cubrirse la nariz y boca. Con tal expectación, nadie se había percatado de la figura que reposa en un sillón al fondo de la sala donde la luz es más escasa. Al apuntar a su rostro con la linterna, se confirma que ese demacrado y corrompido cuerpo es el de Anthony Clock. Alguien da un grito ahogado de pavor al verlo. Al instante, unas cintas comienzan a girar en un viejo proyector y un foco ilumina una pizarra amarillenta.\nBienvenidos a mi humilde taller donde he pasado los últimos 20 años, aunque en realidad creo que han sido algunos más, pues tendría que sumar los que he pasado en otras épocas. Efectivamente lo logré. Mi nombre es Anthony Clock y esta es mi funcional máquina del tiempo. Tengo que confesaros que no existe ninguna comisión interinstitucional del tiempo ni nada por el estilo. Todo este embrollo lo he montado yo para ofrecer un incalculable regalo a quien consiga llegar hasta aquí. Conseguí controlar mi rencor y me di cuenta del daño que podía ocasionar si cometía el parricidio. Por lo que desistí en mi empeño y en cambio, en mis viajes he recopilado datos reveladores que podrían cambiar la percepción y el curso de la historia. Lástima que no aguantaré para compartirlo, pués mi cuerpo ha sufrido un deterioro irrecuperable con tantos saltos. Tal vez no haya sabido para a tiempo y me queda muy poco de vida. Como os decía, dejaré programada la máquina para un último viaje. Solo tenéis que introducir la numeración con los datos que habréis recopilado. Después decidir una fecha y disfrutar de mi regalo. No tenéis de que preocuparos, un salto equivale a poco mas que la radiación a la que se expone un cuerpo en una radiografía. Tampoco se preocupéis de la vuelta, pués está programada para haceros regresar automáticamente en un mes. En esos cajones granates tenéis monedas de la mayoría de las épocas y lugares que he ido recopilando, para que podáis moveros, comer y dormir en el momento que elijáis. Por último dejar anotado a que lugar deseáis viajar y por qué. Tal vez conocer a algún personaje histórico, evitar una gran catástrofe o simplemente ser testigos de algún momento importante del pasado. Espero que se me recuerde como algo mas que un simple relojero loco.",
+        "questions":[],
+        "buttons": []
+    }
+]  
