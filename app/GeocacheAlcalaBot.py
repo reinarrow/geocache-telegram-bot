@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(nam
 
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 
-with open('history_metadata.json', 'r') as history_file:
+with open('config/history_metadata.json', 'r') as history_file:
     data = history_file.read()
 history_data = json.loads(data)
 
@@ -87,7 +87,6 @@ def build_buttons_markup(buttons):
 
     return markup
 
-
 def button_tap(update: Update, context: CallbackContext) -> None:
     """
     This handler processes the inline buttons on the menu
@@ -143,6 +142,15 @@ def send_next_step(step_id: int, update: Update, context: CallbackContext):
 
         if first_question:
             send_question(update, context, first_question)
+
+        # Send image if any
+        if current_step_data['image']:
+            photo_path = "image/" + current_step_data['image']
+            with open(photo_path, "rb") as photo_file:
+                context.bot.send_photo(
+                    chat_id = update.effective_chat.id, 
+                    photo = photo_file
+                )
 
     else:
         # No more steps, the history is done
