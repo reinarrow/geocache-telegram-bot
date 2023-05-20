@@ -101,11 +101,30 @@
         "questions":[],
         "buttons": [
             {
-            "id": 1,
-            "label": "Reiniciar",
-            "target_step": 0
+               "id": 1,
+               "label": "Geocache encontrado (¡CUIDADO: terminará el juego!)",
+               "target_step": 5
+            },
+            {
+                "id": 2,
+                "label": "Reiniciar",
+                "target_step": 0
             }
         ],
         "image": "sample.jpg"
-    }    
+    },
+    {
+        "id": 5,
+        "title": "GRACIAS",
+        "text": "El mundo te agradece tu labor evitando la catástrofe. Esperamos que lo hayas pasado bien.",
+        "questions":[],
+        "buttons": [
+            {
+                "id": 1,
+                "label": "Reiniciar",
+                "target_step": 0
+            }
+        ],
+        "image": "gracias.jpg"
+    }        
 ]  
