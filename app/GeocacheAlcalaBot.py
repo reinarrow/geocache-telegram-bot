@@ -90,9 +90,8 @@ def build_buttons_markup(buttons):
     buttons_markup = []
 
     # Generate list of markup for buttons
-    markup = None
     for button in buttons:
-        buttons_markup.append(InlineKeyboardButton(button['label'], callback_data=int(button['target_step'])))
+        buttons_markup.append(InlineKeyboardButton(button.get('label'), callback_data=int(button.get('target_step'))))
     
     # Create full markup
     markup = InlineKeyboardMarkup([buttons_markup,])
