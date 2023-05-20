@@ -10,10 +10,6 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(nam
 
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 
-with open('config/history_metadata.json', 'r') as history_file:
-    data = history_file.read()
-history_data = json.loads(data)
-
 con = None
 cur = None
 
@@ -47,6 +43,21 @@ def init_db():
 
 init_db()
 
+def get_config_data(step_id):
+    """
+    Get the data corresponding to the input step_id (comparing to the field id in the config file. The JSON is read every time to allow for configuration changes without having to restart the application)
+    """
+    config_path = 'config/history_metadata.json'
+    try:
+        with open(config_path, 'r') as history_file:
+            history_data = json.load(history_file)
+            # Find the data corresponding to the current step
+            return next((step_data for step_data in history_data if step_data.get('id') == step_id), None)
+    except FileNotFoundError:
+        print(f"File not found: {config_path}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
 def start(update: Update, context: CallbackContext):
     """
     This handler sends a menu with the text and inline buttons of the welcome message
@@ -59,6 +70,7 @@ def start(update: Update, context: CallbackContext):
     current_chat_data = cur.fetchone()
     
     if current_chat_data:
+        # If the user already existed, resend the initial instructions. Might be useful if they did not start the adventure but the chat got lost. Otherwise, they will not know how to start
         if(current_chat_data[0] == 0):
             send_next_step(0, update, context)
         return
@@ -111,18 +123,14 @@ def button_tap(update: Update, context: CallbackContext) -> None:
     send_next_step(next_step, update, context)
 
 def send_next_step(step_id: int, update: Update, context: CallbackContext):    
-    current_step_data = None
-    for step in history_data:
-        if step['id'] == step_id:
-            current_step_data = step
-            break
+    current_step_data = get_config_data(step_id)
 
     if current_step_data:
         # Update text        
-        text = "<b>"+current_step_data['title']+"</b>"+"\n\n"+current_step_data['text']
+        text = "<b>"+current_step_data.get('title')+"</b>"+"\n\n"+current_step_data.get('text')
 
         # Update buttons (if any)
-        markup = build_buttons_markup(current_step_data['buttons'])
+        markup = build_buttons_markup(current_step_data.get('buttons'))
 
         # Send history markup (text + buttons)
         context.bot.send_message(
@@ -133,28 +141,48 @@ def send_next_step(step_id: int, update: Update, context: CallbackContext):
         )
 
         # Send first question if any
-        first_question = None
-        if current_step_data['questions']:
-            for question in current_step_data['questions']:
-                if question['id'] == 0:
-                    first_question = question
-                    break
+        first_question = (next((question for question in questions_config if question.get('id') == 0),'None')) if (questions_config := current_step_data.get('questions')) else None
 
         if first_question:
             send_question(update, context, first_question)
 
+        # Send audio if any
+        if audio_config := current_step_data.get('audio'):
+            send_media(context, update.effective_chat.id, 'audio', 'audio/' + audio_config)            
+
         # Send image if any
-        if current_step_data['image']:
-            photo_path = "image/" + current_step_data['image']
-            with open(photo_path, "rb") as photo_file:
-                context.bot.send_photo(
-                    chat_id = update.effective_chat.id, 
-                    photo = photo_file
-                )
+        if image_config:= current_step_data.get('image'):
+            send_media(context, update.effective_chat.id, 'photo', 'image/' + image_config)
 
     else:
         # No more steps, the history is done
         print("Step ", step_id, " not found")
+
+def send_media (context, chat_id, type, path):
+    """
+    Helper to send a media file to the chat, resilient in case the file does not exist
+
+    :param context: The context of the telegram bot
+    :param chat_id: Id of the chat to send the file to
+    :param type: Type of file. Can be 'audio' or 'photo'
+    :param path: Relative path to the file to be sent
+    """
+    try:
+        with open(path, "rb") as file:
+                if(type == 'photo'):
+                    context.bot.send_photo(
+                        chat_id = chat_id, 
+                        photo = file
+                    )
+                elif(type == 'audio'):
+                    context.bot.send_audio(
+                        chat_id = chat_id, 
+                        audio = file
+                    )
+    except FileNotFoundError:
+        print(f"File not found: {file}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 def answer(update: Update, context: CallbackContext) -> None:
     """Process answer."""
@@ -165,35 +193,35 @@ def answer(update: Update, context: CallbackContext) -> None:
     current_step = None
     if current_chat_data:
         current_step = current_chat_data[0]
-    if current_chat_data == None or current_step == 0:
-        text = "Envía /start o pulsa el botón Start abajo para iniciar el bot"
 
+    # If current step is the introduction (0), first (1) or the last one, just give default message
+    if current_step == 0:
+        text = "Envía /start o pulsa el botón Start abajo para iniciar el bot"
+    elif current_step == 1:
+        text = "Pulsa el botón para empezar"
+    elif current_step == 4:
+        # TODO: Change this when the implementation of the end of the game logics is ready
+        text = "El mundo te agradece tu labor evitando la catástrofe. Esperamos que lo hayas pasado bien."
     else:
+        # Intermediate step, check if there is an ongoing question and get the answer from history metadata        
         current_question = current_chat_data[1]
 
         # Get current correct answer if any
-        questions = None
         current_answer = None
-        for step in history_data:
-            if step['id'] == current_step:
-                questions = step['questions']
-                for question in questions:
-                    if question['id'] == current_question:
-                        current_answer = question['answer']
-
-        
-        if current_step == 1:
-            text = "Pulsa el botón para empezar"
-        elif current_answer:    
+        current_step_data = get_config_data(current_step)
+        questions = current_step_data.get('questions')
+        for question in questions:
+            if question['id'] == current_question:
+                current_answer = question.get('answer')
+                break 
+        if current_answer:    
             if update.message and update.message.text.lower() == current_answer.lower():
                 text = "Genial, se vé que sabes usar Google!"
                 correct_answer = True
             else:
                 text = "¿Estás seguro? Inténtalo de nuevo"
-        elif current_step == 4:
-            text = "El mundo te agradece tu labor evitando la catástrofe. Esperamos que lo hayas pasado bien."
         else:
-            # No current question exists. Send default message
+        # No current question exists. Send default message
             text = "Deja de charlar y manos a la obra. ¡Necesitamos tu ayuda para encontrar al Anthony!"
 
     update.message.reply_text(text)

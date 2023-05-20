@@ -11,7 +11,8 @@
                 "label": "¡Comenzar la aventura!",
                 "target_step": 1
             }
-        ]
+        ],
+        "audio": "sample2.m4a"
     },
     {
         "id": 1,
@@ -26,7 +27,8 @@
                 "target_step": 2
             }
         ],
-        "image": "sample2.jpg"
+        "image": "sample2.jpg",
+        "audio": "sample.mp3"
     },
     {
         "id": 2,
