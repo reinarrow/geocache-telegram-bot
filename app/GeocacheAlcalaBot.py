@@ -157,7 +157,7 @@ def send_next_step(step_id: int, update: Update, context: CallbackContext):
         # No more steps, the history is done
         print("Step ", step_id, " not found")
 
-def send_media (context, chat_id, type, path):
+def send_media(context, chat_id, type, path):
     """
     Helper to send a media file to the chat, resilient in case the file does not exist
 
@@ -196,11 +196,6 @@ def answer(update: Update, context: CallbackContext) -> None:
     # If current step is the introduction (0), first (1) or the last one, just give default message
     if current_step == 0:
         text = "Envía /start o pulsa el botón Start abajo para iniciar el bot"
-    elif current_step == 1:
-        text = "Pulsa el botón para empezar"
-    elif current_step == 4:
-        # TODO: Change this when the implementation of the end of the game logics is ready
-        text = "El mundo te agradece tu labor evitando la catástrofe. Esperamos que lo hayas pasado bien."
     else:
         # Intermediate step, check if there is an ongoing question and get the answer from history metadata        
         current_question = current_chat_data[1]
@@ -248,7 +243,6 @@ def answer(update: Update, context: CallbackContext) -> None:
         cur.close()
 
 def send_question(update: Update, context: CallbackContext, question):
-
     # Send the question to the chat
     context.bot.send_message(
         update.effective_chat.id,
