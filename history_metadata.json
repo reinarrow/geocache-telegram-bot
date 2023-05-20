@@ -11,7 +11,8 @@
                 "label": "¡Comenzar la aventura!",
                 "target_step": 1
             }
-        ]
+        ],
+        "image": "sample.jpg"
 
     },
     {
@@ -26,8 +27,8 @@
                 "label": "Continuar",
                 "target_step": 2
             }
-        ]
-
+        ],
+        "image": "sample2.jpg"
     },
     {
         "id": 2,
@@ -47,7 +48,8 @@
                 "answer":  "11"                   
             }
         ],
-        "buttons": []
+        "buttons": [],
+        "image": "sample.jpg"
     },
     {
         "id": 3,
@@ -67,13 +69,15 @@
                 "answer":  "la cochinita"                   
             }
         ],
-        "buttons": []
+        "buttons": [],
+        "image": "sample.jpg"
     },
     {
         "id": 4,
         "title": "Desenlace",
         "text": "Habéis encontrado la entrada principal de la gruta. No es momento de echarse atrás, pues en el interior está la respuesta del gran enigma. Entráis agachados por la humeda galeria y pronto el techo se vuelve el doble de alto y las paredes ya no rozan vuestros hombros, pero la oscuridad es total y tenéis que encender las linternas. El olor fresco se torna nauseabundo cuando se encontráis con una sala a medio iluminar. La red de túneles continúa, pero esta habitación llama vuestra atención. Al cruzar el umbral, veís como un par de tragaluz de decenas de metros de altura, dejan ver tibiamente la supuesta maquina del tiempo. Al fin la habéis encontrado. El olor hace necesario cubrirse la nariz y boca. Con tal expectación, nadie se había percatado de la figura que reposa en un sillón al fondo de la sala donde la luz es más escasa. Al apuntar a su rostro con la linterna, se confirma que ese demacrado y corrompido cuerpo es el de Anthony Clock. Alguien da un grito ahogado de pavor al verlo. Al instante, unas cintas comienzan a girar en un viejo proyector y un foco ilumina una pizarra amarillenta.\nBienvenidos a mi humilde taller donde he pasado los últimos 20 años, aunque en realidad creo que han sido algunos más, pues tendría que sumar los que he pasado en otras épocas. Efectivamente lo logré. Mi nombre es Anthony Clock y esta es mi funcional máquina del tiempo. Tengo que confesaros que no existe ninguna comisión interinstitucional del tiempo ni nada por el estilo. Todo este embrollo lo he montado yo para ofrecer un incalculable regalo a quien consiga llegar hasta aquí. Conseguí controlar mi rencor y me di cuenta del daño que podía ocasionar si cometía el parricidio. Por lo que desistí en mi empeño y en cambio, en mis viajes he recopilado datos reveladores que podrían cambiar la percepción y el curso de la historia. Lástima que no aguantaré para compartirlo, pués mi cuerpo ha sufrido un deterioro irrecuperable con tantos saltos. Tal vez no haya sabido para a tiempo y me queda muy poco de vida. Como os decía, dejaré programada la máquina para un último viaje. Solo tenéis que introducir la numeración con los datos que habréis recopilado. Después decidir una fecha y disfrutar de mi regalo. No tenéis de que preocuparos, un salto equivale a poco mas que la radiación a la que se expone un cuerpo en una radiografía. Tampoco se preocupéis de la vuelta, pués está programada para haceros regresar automáticamente en un mes. En esos cajones granates tenéis monedas de la mayoría de las épocas y lugares que he ido recopilando, para que podáis moveros, comer y dormir en el momento que elijáis. Por último dejar anotado a que lugar deseáis viajar y por qué. Tal vez conocer a algún personaje histórico, evitar una gran catástrofe o simplemente ser testigos de algún momento importante del pasado. Espero que se me recuerde como algo mas que un simple relojero loco.",
         "questions":[],
-        "buttons": []
+        "buttons": [],
+        "image": "sample.jpg"
     }
 ]  

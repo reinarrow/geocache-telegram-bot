@@ -144,13 +144,13 @@ def send_next_step(step_id: int, update: Update, context: CallbackContext):
             send_question(update, context, first_question)
 
         # Send image if any
-        ## TODO: Sample photo to be substituted by real ones read by the history metadata 
-        sample_photo_path = "image/sample.jpg"
-        with open(sample_photo_path, "rb") as photo_file:
-            context.bot.send_photo(
-                chat_id = update.effective_chat.id, 
-                photo = photo_file
-            )
+        if current_step_data['image']:
+            photo_path = "image/" + current_step_data['image']
+            with open(photo_path, "rb") as photo_file:
+                context.bot.send_photo(
+                    chat_id = update.effective_chat.id, 
+                    photo = photo_file
+                )
 
     else:
         # No more steps, the history is done
