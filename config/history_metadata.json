@@ -11,9 +11,7 @@
                 "label": "¡Comenzar la aventura!",
                 "target_step": 1
             }
-        ],
-        "image": "sample.jpg"
-
+        ]
     },
     {
         "id": 1,

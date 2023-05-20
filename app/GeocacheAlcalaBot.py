@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(nam
 
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 
-with open('history_metadata.json', 'r') as history_file:
+with open('config/history_metadata.json', 'r') as history_file:
     data = history_file.read()
 history_data = json.loads(data)
 
