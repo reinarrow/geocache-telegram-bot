@@ -36,7 +36,7 @@ def init_db():
         table_exists = cur.fetchone()[0]
 
         if not table_exists:
-            cur.execute("CREATE TABLE chat_data (chat_id INT PRIMARY KEY, current_step INT, current_question INT)")
+            cur.execute("CREATE TABLE chat_data (chat_id BIGINT PRIMARY KEY, current_step INT, current_question INT)")
             conn.commit()
     finally:
         cur.close()
