@@ -2,7 +2,7 @@
     {
         "id": 0,
         "title": "Hola, soy GeocacheBot",
-        "text": "Encantado de conocerte. Mi propósito es guiarte a lo largo de esta aventura hasta entontrar el Geocaché final. Pulsa el siguiente botón para comenzar la historia. \n\nUna vez que lo pulses, el tiempo comenzará a contar, así que asegúrate de estar listo para emprender esta aventura antes de hacerlo.",
+        "text": "Encantado de conocerte. Mi propósito es guiarte a lo largo de esta aventura intertemporal hasta entontrar el Geocaché final. Pulsa el siguiente botón para comenzar la historia. \n\nUna vez que lo pulses, el tiempo comenzará a contar, así que asegúrate de estar listo para emprender el viaje antes de hacerlo.\n\nEn cada etapa, recibiréis una imagen con una localización aproximada en el mapa. Para avanzar en la historia y recibir nueva información, deberás acudir a dicha localización. Si os atascáis durante la navegación, pulsad el botón de ayuda para obtener las coordenadas exactas. Pero cuidado, esto hará que vuestro tiempo total aumente 5 minutos con cada uso, con el peligro de que lleguéis a un punto de no retorno en vuestro viaje en el tiempo. ¡No abuses del botón!",
         "questions": [],
         "buttons":
         [
@@ -28,17 +28,24 @@
         [
             {
                 "id": 1,
+                "label": "Ayuda",
+                "target_step": -1
+            },
+            {
+                "id": 2,
                 "label": "Continuar",
                 "target_step": 2
             },
             {
-                "id": 2,
+                "id": 3,
                 "label": "Reiniciar",
                 "target_step": 0
             }
         ],
         "image": "sample2.jpg",
-        "audio": "sample.mp3"
+        "audio": "sample.mp3",
+        "help": "https://tinyurl.com/geocache-alcala-1",
+        "next_coordinates": [37.332167, -5.852671] 
     },
     {
         "id": 2,
@@ -63,9 +70,17 @@
                 "id": 1,
                 "label": "Reiniciar",
                 "target_step": 0
+            },
+            {
+                "id": 2,
+                "label": "Ayuda",
+                "target_step": -1
             }
         ],
-        "image": "sample.jpg"
+        "image": "sample.jpg",
+        "audio": "sample.mp3",
+        "help": "https://tinyurl.com/geocache-alcala-1",
+        "next_coordinates": [37.332167, -5.852671]         
     },
     {
         "id": 3,
