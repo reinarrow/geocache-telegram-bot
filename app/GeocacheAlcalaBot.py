@@ -2,6 +2,7 @@ import logging
 import json
 import psycopg2
 import os
+from datetime import datetime, timedelta
 
 from telegram import Update, ForceReply, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, CallbackQueryHandler
@@ -9,6 +10,8 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Callb
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
 
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
+
+CONFIG_PATH = 'config/history_metadata.json'
 
 con = None
 cur = None
@@ -36,7 +39,7 @@ def init_db():
         table_exists = cur.fetchone()[0]
 
         if not table_exists:
-            cur.execute("CREATE TABLE chat_data (chat_id BIGINT PRIMARY KEY, current_step INT, current_question INT, helps_used INT)")
+            cur.execute("CREATE TABLE chat_data (chat_id BIGINT PRIMARY KEY, current_step INT, current_question INT, helps_used INT, start_time timestamp, total_time interval)")
             conn.commit()
     finally:
         cur.close()
@@ -46,15 +49,27 @@ init_db()
 def get_config_data(step_id):
     """
     Get the data corresponding to the input step_id (comparing to the field id in the config file. The JSON is read every time to allow for configuration changes without having to restart the application)
-    """
-    config_path = 'config/history_metadata.json'
+    """    
     try:
-        with open(config_path, 'r') as history_file:
+        with open(CONFIG_PATH, 'r') as history_file:
             history_data = json.load(history_file)
             # Find the data corresponding to the current step
             return next((step_data for step_data in history_data if step_data.get('id') == step_id), None)
     except FileNotFoundError:
-        print(f"File not found: {config_path}")
+        print(f"File not found: {CONFIG_PATH}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+def get_last_step():
+    """
+    Get the maximum step in the history config file
+    """ 
+    try:
+        with open(CONFIG_PATH, 'r') as history_file:
+            history_data = json.load(history_file)
+            return max(data.get('id') for data in history_data)
+    except FileNotFoundError:
+        print(f"File not found: {CONFIG_PATH}")
     except Exception as e:
         print(f"An error occurred: {e}")
 
@@ -106,6 +121,9 @@ def button_tap(update: Update, context: CallbackContext) -> None:
     chat_id = update.effective_chat.id
     next_step = int(update.callback_query.data)
 
+    current_chat_data = get_current_chat_data(chat_id)
+    current_step_data = get_config_data(current_chat_data[0])            
+
     # Close the query to end the client-side loading animation
     update.callback_query.answer()
 
@@ -115,10 +133,8 @@ def button_tap(update: Update, context: CallbackContext) -> None:
     cur = conn.cursor()
     # Id of the Help button is -1
     if next_step == -1:
-        current_chat_data = get_current_chat_data(chat_id)
-
         # Get link to coordinates for current step
-        help_link = get_config_data(current_chat_data[0]).get('help')
+        help_link = current_step_data.get('help')
 
         # Send help message
         if help_link:
@@ -138,12 +154,38 @@ def button_tap(update: Update, context: CallbackContext) -> None:
         cur.execute("UPDATE chat_data SET current_step=%s, current_question=%s WHERE chat_id=%s",(next_step, 0, chat_id))
 
         if next_step == 0:
-            # Reset logics. TODO: reset timer
-            # Reset helps
-            cur.execute("UPDATE chat_data SET helps_used=%s WHERE chat_id=%s",(0, chat_id))
+            # Reset helps, start_time and total_time
+            cur.execute("UPDATE chat_data SET helps_used=%s, start_time=%s, total_time=%s WHERE chat_id=%s",(0, None, None, chat_id))     
+
+        elif next_step == 1:
+            # Player just started. Store init time
+            now = datetime.now()
+            cur.execute("UPDATE chat_data SET start_time=%s WHERE chat_id=%s",(now, chat_id))
+
+        elif next_step == get_last_step():
+            end_time = datetime.now()
+            # Get the user start time to calculate elapsed
+            cur.execute("SELECT start_time, helps_used FROM chat_data WHERE chat_id=%s;",(chat_id,))
+            data = cur.fetchone()
+            # Final time before punishment for using helps
+            elapsed = end_time - data[0]
+            # Total time adding 5 minutes for each used help
+            total_time = elapsed + timedelta(minutes = 5*data[1])
+
+            # Write final score to database for the highscore future functionality
+            cur.execute("UPDATE chat_data SET total_time=%s WHERE chat_id=%s",(total_time, chat_id))
+
+            # Calculate the total number of seconds
+            elapsed_seconds = int(elapsed.total_seconds())
+            total_seconds = int(total_time.total_seconds())
+
+            final_report =f"Tu tiempo total ha sido de {elapsed_seconds // 3600} horas y {(elapsed_seconds % 3600) // 60} minutos y has usado {data[1]} ayudas. Por lo tanto, tu tiempo final es de {total_seconds // 3600} horas y {(total_seconds % 3600) // 60} minutos (5 min más por cada ayuda)."
+
+            context.bot.send_message(update.effective_chat.id, final_report)
+
         conn.commit()
         cur.close()
-       
+
         # call the update function to send the next message
         send_next_step(next_step, update, context)
 
