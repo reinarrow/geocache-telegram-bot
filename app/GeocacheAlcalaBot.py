@@ -36,7 +36,7 @@ def init_db():
         table_exists = cur.fetchone()[0]
 
         if not table_exists:
-            cur.execute("CREATE TABLE chat_data (chat_id BIGINT PRIMARY KEY, current_step INT, current_question INT)")
+            cur.execute("CREATE TABLE chat_data (chat_id BIGINT PRIMARY KEY, current_step INT, current_question INT, helps_used INT)")
             conn.commit()
     finally:
         cur.close()
@@ -75,13 +75,13 @@ def start(update: Update, context: CallbackContext):
             send_next_step(0, update, context)
         return
     print(chat_id)
-    cur.execute("INSERT INTO chat_data (chat_id, current_step, current_question) VALUES (%s,%s,%s);", (chat_id, 0, 0))
+    cur.execute("INSERT INTO chat_data (chat_id, current_step, current_question, helps_used) VALUES (%s,%s,%s);", (chat_id, 0, 0, 0))
     cur.close()
     send_next_step(0, update, context)
 
 def get_current_chat_data(chat_id):
     cur = conn.cursor()
-    cur.execute("SELECT current_step, current_question FROM chat_data WHERE chat_id=%s;",(chat_id,))
+    cur.execute("SELECT current_step, current_question, helps_used FROM chat_data WHERE chat_id=%s;",(chat_id,))
     current_chat_data = cur.fetchone()
     cur.close()
     return current_chat_data
@@ -106,20 +106,46 @@ def button_tap(update: Update, context: CallbackContext) -> None:
     chat_id = update.effective_chat.id
     next_step = int(update.callback_query.data)
 
-    # Move to target step and reset current_question to 0
-    cur = conn.cursor()
-    cur.execute("UPDATE chat_data SET current_step=%s, current_question=%s WHERE chat_id=%s",(next_step, 0, chat_id))
-    conn.commit()
-    cur.close()
-
     # Close the query to end the client-side loading animation
     update.callback_query.answer()
 
     # Remove button
     context.bot.edit_message_reply_markup(chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, reply_markup=None)
+    
+    cur = conn.cursor()
+    # Id of the Help button is -1
+    if next_step == -1:
+        current_chat_data = get_current_chat_data(chat_id)
 
-    # call the update function to send the next message
-    send_next_step(next_step, update, context)
+        # Get link to coordinates for current step
+        help_link = get_config_data(current_chat_data[0]).get('help')
+
+        # Send help message
+        if help_link:
+            # Send history markup (text + buttons)
+            context.bot.send_message(update.effective_chat.id, help_link)
+
+            # Add one help to total cout            
+            prev_helps_used = current_chat_data[2]
+
+            cur.execute("UPDATE chat_data SET helps_used=%s WHERE chat_id=%s",(prev_helps_used+1, chat_id))
+            conn.commit()
+            cur.close()
+        else: 
+            context.bot.send_message(update.effective_chat.id, "Lo siento, no hay ayuda disponible en este momento.")
+    else:
+        # Move to target step and reset current_question to 0        
+        cur.execute("UPDATE chat_data SET current_step=%s, current_question=%s WHERE chat_id=%s",(next_step, 0, chat_id))
+
+        if next_step == 0:
+            # Reset logics. TODO: reset timer
+            # Reset helps
+            cur.execute("UPDATE chat_data SET helps_used=%s WHERE chat_id=%s",(0, chat_id))
+        conn.commit()
+        cur.close()
+       
+        # call the update function to send the next message
+        send_next_step(next_step, update, context)
 
 def send_next_step(step_id: int, update: Update, context: CallbackContext):    
     current_step_data = get_config_data(step_id)
@@ -137,13 +163,7 @@ def send_next_step(step_id: int, update: Update, context: CallbackContext):
             text,
             parse_mode=ParseMode.HTML,
             reply_markup=markup
-        )
-
-        # Send first question if any
-        first_question = (next((question for question in questions_config if question.get('id') == 0),'None')) if (questions_config := current_step_data.get('questions')) else None
-
-        if first_question:
-            send_question(update, context, first_question)
+        )        
 
         # Send audio if any
         if audio_config := current_step_data.get('audio'):
@@ -153,6 +173,11 @@ def send_next_step(step_id: int, update: Update, context: CallbackContext):
         if image_config:= current_step_data.get('image'):
             send_media(context, update.effective_chat.id, 'photo', 'image/' + image_config)
 
+        # Send first question if any
+        first_question = (next((question for question in questions_config if question.get('id') == 0),'None')) if (questions_config := current_step_data.get('questions')) else None
+
+        if first_question:
+            send_question(update, context, first_question)
     else:
         # No more steps, the history is done
         print("Step ", step_id, " not found")
@@ -193,7 +218,7 @@ def answer(update: Update, context: CallbackContext) -> None:
     if current_chat_data:
         current_step = current_chat_data[0]
 
-    # If current step is the introduction (0), first (1) or the last one, just give default message
+    # If current step is the introduction (0), just give default message
     if current_step == 0:
         text = "Envía /start o pulsa el botón Start abajo para iniciar el bot"
     else:
