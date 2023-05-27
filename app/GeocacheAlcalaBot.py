@@ -4,7 +4,7 @@ import psycopg2
 import os
 from datetime import datetime, timedelta
 
-from telegram import Update, ForceReply, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
+from telegram import Update, ForceReply,ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, CallbackQueryHandler
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
@@ -106,12 +106,9 @@ def build_buttons_markup(buttons):
 
     # Generate list of markup for buttons
     for button in buttons:
-        buttons_markup.append(InlineKeyboardButton(button.get('label'), callback_data=int(button.get('target_step'))))
-    
-    # Create full markup
-    markup = InlineKeyboardMarkup([buttons_markup,])
-
-    return markup
+        button_data = button.get('data')
+        buttons_markup.append(InlineKeyboardButton(button.get('label'), callback_data=button_data))                    
+    return InlineKeyboardMarkup([buttons_markup,])
 
 def button_tap(update: Update, context: CallbackContext) -> None:
     """
@@ -119,7 +116,8 @@ def button_tap(update: Update, context: CallbackContext) -> None:
     """
     # Find data from current chat to update the step
     chat_id = update.effective_chat.id
-    next_step = int(update.callback_query.data)
+    query = update.callback_query
+    next_step = int(query.data)
 
     current_chat_data = get_current_chat_data(chat_id)
     current_step_data = get_config_data(current_chat_data[0])            
@@ -131,6 +129,7 @@ def button_tap(update: Update, context: CallbackContext) -> None:
     context.bot.edit_message_reply_markup(chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, reply_markup=None)
     
     cur = conn.cursor()
+
     # Id of the Help button is -1
     if next_step == -1:
         # Get link to coordinates for current step
@@ -148,7 +147,7 @@ def button_tap(update: Update, context: CallbackContext) -> None:
             conn.commit()
             cur.close()
         else: 
-            context.bot.send_message(update.effective_chat.id, "Lo siento, no hay ayuda disponible en este momento.")
+            context.bot.send_message(update.effective_chat.id, "Lo siento, no hay ayuda disponible en este momento.")           
     else:
         # Move to target step and reset current_question to 0        
         cur.execute("UPDATE chat_data SET current_step=%s, current_question=%s WHERE chat_id=%s",(next_step, 0, chat_id))
@@ -215,10 +214,15 @@ def send_next_step(step_id: int, update: Update, context: CallbackContext):
         if image_config:= current_step_data.get('image'):
             send_media(context, update.effective_chat.id, 'photo', 'image/' + image_config)
 
-        # Send first question if any
-        first_question = (next((question for question in questions_config if question.get('id') == 0),'None')) if (questions_config := current_step_data.get('questions')) else None
-
-        if first_question:
+        # If there is a navigation phase (next_coordinates is not null), include the button to send the location
+        if current_step_data.get('next_coordinates'):
+            keyboard = [[KeyboardButton(text="Enviar localización", request_location=True)]]
+            reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
+            update.callback_query.message.reply_text('Cuando estés en las coordenadas, pulsa en enviar localización para comprobarlo. Asegúrate de tener activada la localización GPS en tu dispositivo.',
+                                    reply_markup=reply_markup)
+    
+        # Send first question if any. TODO: This should disappear and only be sent by location
+        if first_question := (next((question for question in questions_config if question.get('id') == 0),'None')) if (questions_config := current_step_data.get('questions')) else None:
             send_question(update, context, first_question)
     else:
         # No more steps, the history is done
@@ -317,6 +321,22 @@ def send_question(update: Update, context: CallbackContext, question):
         parse_mode=ParseMode.HTML,
         reply_markup=None
     )  
+
+def request_location(update: Update, context: CallbackContext) -> None:   
+    keyboard = [[KeyboardButton(text="Send Your Location", request_location=True)]]
+    reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
+    update.message.reply_text(f'Text',
+                              reply_markup=reply_markup)
+    
+def location(update: Update, context: CallbackContext):
+    current_pos = update.message.location
+    logging.info(current_pos)
+
+    # TODO: Substitute by real location checking
+    if current_pos.latitude > 0:
+        reply_markup = None
+        update.message.reply_text(f'¡Enhorabuena, has llegado al siguiente destino!',
+                              reply_markup=reply_markup)
     
 def main() -> None:
     updater = Updater(BOT_TOKEN)
@@ -326,7 +346,10 @@ def main() -> None:
     dispatcher = updater.dispatcher
 
     # Register commands
-    dispatcher.add_handler(CommandHandler('start', start))    
+    dispatcher.add_handler(CommandHandler('start', start))       
+
+    dispatcher.add_handler(CommandHandler('location', request_location))
+    dispatcher.add_handler(MessageHandler(Filters.location, location))
 
     # Register handler for inline buttons
     dispatcher.add_handler(CallbackQueryHandler(button_tap))

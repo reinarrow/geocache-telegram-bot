@@ -9,15 +9,15 @@
             {
                 "id": 1,
                 "label": "¡Comenzar la aventura!",
-                "target_step": 1
+                "data": 1
             },
             {
                 "id": 2,
                 "label": "Reiniciar",
-                "target_step": 0
+                "data": 0
             }
         ],
-        "audio": "sample2.m4a"
+        "audio": "sample2.m4a"        
     },
     {
         "id": 1,
@@ -29,17 +29,17 @@
             {
                 "id": 1,
                 "label": "Ayuda",
-                "target_step": -1
+                "data": -1
             },
             {
                 "id": 2,
                 "label": "Continuar",
-                "target_step": 2
+                "data": 2
             },
             {
                 "id": 3,
                 "label": "Reiniciar",
-                "target_step": 0
+                "data": 0
             }
         ],
         "image": "sample2.jpg",
@@ -69,12 +69,12 @@
             {
                 "id": 1,
                 "label": "Reiniciar",
-                "target_step": 0
+                "data": 0
             },
             {
                 "id": 2,
                 "label": "Ayuda",
-                "target_step": -1
+                "data": -1
             }
         ],
         "image": "sample.jpg",
@@ -104,7 +104,7 @@
             {
                 "id": 1,
                 "label": "Reiniciar",
-                "target_step": 0
+                "data": 0
             }
         ],
         "image": "sample.jpg"
@@ -118,12 +118,12 @@
             {
                "id": 1,
                "label": "Geocache encontrado (¡CUIDADO: terminará el juego!)",
-               "target_step": 5
+               "data": 5
             },
             {
                 "id": 2,
                 "label": "Reiniciar",
-                "target_step": 0
+                "data": 0
             }
         ],
         "image": "sample.jpg"
@@ -137,7 +137,7 @@
             {
                 "id": 1,
                 "label": "Reiniciar",
-                "target_step": 0
+                "data": 0
             }
         ],
         "image": "gracias.jpg"
