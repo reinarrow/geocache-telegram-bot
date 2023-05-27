@@ -90,7 +90,7 @@ def start(update: Update, context: CallbackContext):
             send_next_step(0, update, context)
         return
     print(chat_id)
-    cur.execute("INSERT INTO chat_data (chat_id, current_step, current_question, helps_used) VALUES (%s,%s,%s);", (chat_id, 0, 0, 0))
+    cur.execute("INSERT INTO chat_data (chat_id, current_step, current_question, helps_used) VALUES (%s,%s,%s,%s);", (chat_id, 0, 0, 0))
     cur.close()
     send_next_step(0, update, context)
 
