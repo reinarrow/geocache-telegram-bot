@@ -106,9 +106,12 @@ def build_buttons_markup(buttons):
 
     # Generate list of markup for buttons
     for button in buttons:
-        button_data = button.get('data')
-        buttons_markup.append(InlineKeyboardButton(button.get('label'), callback_data=button_data))                    
-    return InlineKeyboardMarkup([buttons_markup,])
+        buttons_markup.append(InlineKeyboardButton(button.get('label'), callback_data=int(button.get('target_step'))))
+    
+    # Create full markup
+    markup = InlineKeyboardMarkup([buttons_markup,])
+
+    return markup
 
 def button_tap(update: Update, context: CallbackContext) -> None:
     """
@@ -116,8 +119,7 @@ def button_tap(update: Update, context: CallbackContext) -> None:
     """
     # Find data from current chat to update the step
     chat_id = update.effective_chat.id
-    query = update.callback_query
-    next_step = int(query.data)
+    next_step = int(update.callback_query.data)
 
     current_chat_data = get_current_chat_data(chat_id)
     current_step_data = get_config_data(current_chat_data[0])            
@@ -129,7 +131,6 @@ def button_tap(update: Update, context: CallbackContext) -> None:
     context.bot.edit_message_reply_markup(chat_id=update.callback_query.message.chat_id, message_id=update.callback_query.message.message_id, reply_markup=None)
     
     cur = conn.cursor()
-
     # Id of the Help button is -1
     if next_step == -1:
         # Get link to coordinates for current step
@@ -147,7 +148,7 @@ def button_tap(update: Update, context: CallbackContext) -> None:
             conn.commit()
             cur.close()
         else: 
-            context.bot.send_message(update.effective_chat.id, "Lo siento, no hay ayuda disponible en este momento.")           
+            context.bot.send_message(update.effective_chat.id, "Lo siento, no hay ayuda disponible en este momento.")
     else:
         # Move to target step and reset current_question to 0        
         cur.execute("UPDATE chat_data SET current_step=%s, current_question=%s WHERE chat_id=%s",(next_step, 0, chat_id))
@@ -346,9 +347,8 @@ def main() -> None:
     dispatcher = updater.dispatcher
 
     # Register commands
-    dispatcher.add_handler(CommandHandler('start', start))       
+    dispatcher.add_handler(CommandHandler('start', start))    
 
-    dispatcher.add_handler(CommandHandler('location', request_location))
     dispatcher.add_handler(MessageHandler(Filters.location, location))
 
     # Register handler for inline buttons
