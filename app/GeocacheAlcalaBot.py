@@ -6,12 +6,16 @@ from datetime import datetime, timedelta
 
 from telegram import Update, ForceReply,ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, CallbackQueryHandler
+from GeoCalculator import GeoCalculator
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
 
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 
 CONFIG_PATH = 'config/history_metadata.json'
+
+# Radius of distance to accept to the next objective in kilometers during navigation
+LOCATION_PRECISION = 0.02
 
 con = None
 cur = None
@@ -106,7 +110,7 @@ def build_buttons_markup(buttons):
 
     # Generate list of markup for buttons
     for button in buttons:
-        buttons_markup.append(InlineKeyboardButton(button.get('label'), callback_data=int(button.get('target_step'))))
+        buttons_markup.append(InlineKeyboardButton(button.get('label'), callback_data=int(button.get('data'))))
     
     # Create full markup
     markup = InlineKeyboardMarkup([buttons_markup,])
@@ -217,9 +221,9 @@ def send_next_step(step_id: int, update: Update, context: CallbackContext):
 
         # If there is a navigation phase (next_coordinates is not null), include the button to send the location
         if current_step_data.get('next_coordinates'):
-            keyboard = [[KeyboardButton(text="Enviar localización", request_location=True)]]
+            keyboard = [[KeyboardButton(text="Comprobar ubicación", request_location=True)]]
             reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
-            update.callback_query.message.reply_text('Cuando estés en las coordenadas, pulsa en enviar localización para comprobarlo. Asegúrate de tener activada la localización GPS en tu dispositivo.',
+            update.callback_query.message.reply_text('Cuando estés en las coordenadas, pulsa en "Comprobar ubicación" para comprobarlo. Asegúrate de tener activada la localización GPS en tu dispositivo.',
                                     reply_markup=reply_markup)
     
         # Send first question if any. TODO: This should disappear and only be sent by location
@@ -332,13 +336,22 @@ def request_location(update: Update, context: CallbackContext) -> None:
 def location(update: Update, context: CallbackContext):
     current_pos = update.message.location
     logging.info(current_pos)
+    
+    user_coords = (current_pos.latitude, current_pos.longitude)
+    # TODO: Retrieve real coordinates from config file
+    next_coordinates = tuple([37.332167, -5.852671])
 
-    # TODO: Substitute by real location checking
-    if current_pos.latitude > 0:
+    distance = GeoCalculator.calculate_distance(user_coords, next_coordinates)
+    print(f"Distance: {distance} kilometers")
+    if distance <= LOCATION_PRECISION:
         reply_markup = None
         update.message.reply_text(f'¡Enhorabuena, has llegado al siguiente destino!',
-                              reply_markup=reply_markup)
-    
+                                reply_markup=reply_markup)
+    else:
+        bearing = GeoCalculator.calculate_compass_bearing(user_coords, next_coordinates)
+        bearing_name = GeoCalculator.convert_bearing_to_cardinal(bearing)
+        update.message.reply_text(f'El objetivo se encuentra a {round(distance*1000)} metros en dirección {bearing_name} ({bearing}° respecto del Norte).')
+        
 def main() -> None:
     updater = Updater(BOT_TOKEN)
 
