@@ -154,7 +154,7 @@ def button_tap(update: Update, context: CallbackContext) -> None:
             help_link = HELP_QUERY_URL.format(lat=next_coordinates[0], lon=next_coordinates[1])
 
             # Send history markup (text + buttons)
-            context.bot.send_message(update.effective_chat.id, 'De acuerdo, aquí tienes las coordenadas: {help_link}')
+            context.bot.send_message(update.effective_chat.id, f'De acuerdo, aquí tienes las coordenadas: {help_link}')
 
             # Add one help to total cout            
             prev_helps_used = current_chat_data[2]
@@ -373,9 +373,8 @@ def location(update: Update, context: CallbackContext):
         
     next_coordinates = current_step_data.get('next_coordinates')
     if not next_coordinates:
-        reply_markup = None
         update.message.reply_text(f'No hay ningún objetivo activo.',
-                                reply_markup=reply_markup)
+                                reply_markup=None)
         return            
 
     distance = GeoCalculator.calculate_distance(user_coords, tuple(next_coordinates))
