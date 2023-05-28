@@ -44,8 +44,7 @@
         ],
         "image": "sample2.jpg",
         "audio": "sample.mp3",
-        "help": "https://tinyurl.com/geocache-alcala-1",
-        "next_coordinates": [37.332167, -5.852671] 
+        "next_coordinates": [37.351437451902875, -5.846107102967426] 
     },
     {
         "id": 2,
@@ -79,8 +78,7 @@
         ],
         "image": "sample.jpg",
         "audio": "sample.mp3",
-        "help": "https://tinyurl.com/geocache-alcala-1",
-        "next_coordinates": [37.332167, -5.852671]         
+        "next_coordinates": [37.351437451902875, -5.846107102967426]      
     },
     {
         "id": 3,
@@ -107,7 +105,8 @@
                 "data": 0
             }
         ],
-        "image": "sample.jpg"
+        "image": "sample.jpg",
+        "next_coordinates": [37.332167, -5.852671]     
     },
     {
         "id": 4,
@@ -126,7 +125,8 @@
                 "data": 0
             }
         ],
-        "image": "sample.jpg"
+        "image": "sample.jpg",
+        "next_coordinates": [37.332167, -5.852671]     
     },
     {
         "id": 5,
