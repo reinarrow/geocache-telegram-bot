@@ -2,7 +2,7 @@
     {
         "id": 0,
         "title": "Hola, soy GeocacheBot",
-        "text": "Encantado de conocerte. Mi propósito es guiarte a lo largo de esta aventura intertemporal hasta entontrar el Geocaché final. Pulsa el siguiente botón para comenzar la historia. \n\nUna vez que lo pulses, el tiempo comenzará a contar, así que asegúrate de estar listo para emprender el viaje antes de hacerlo.\n\nEn cada etapa, recibiréis una imagen con una localización aproximada en el mapa. Para avanzar en la historia y recibir nueva información, deberás acudir a dicha localización. Si os atascáis durante la navegación, pulsad el botón de ayuda para obtener las coordenadas exactas. Pero cuidado, esto hará que vuestro tiempo total aumente 5 minutos con cada uso, con el peligro de que lleguéis a un punto de no retorno en vuestro viaje en el tiempo. ¡No abuses del botón!",
+        "text": "Encantado de conocerte. Mi propósito es guiarte a lo largo de esta aventura intertemporal hasta entontrar el Geocaché final. Pulsa el siguiente botón para comenzar la historia. \n\nUna vez que lo pulses, el tiempo comenzará a contar, así que asegúrate de estar listo para emprender el viaje antes de hacerlo.\n\nEn cada etapa, recibirás una imagen con una localización aproximada en el mapa. Para avanzar en la historia y recibir nueva información, deberás acudir a dicha localización. Si te atascas durante la navegación, pulsa el botón de ayuda para obtener las coordenadas exactas. Pero cuidado, esto hará que tu tiempo total aumente 5 minutos con cada uso, con el peligro de que llegues a un punto de no retorno en tu viaje en el tiempo. ¡No abuses del botón!",
         "questions": [],
         "buttons":
         [
@@ -10,58 +10,58 @@
                 "id": 1,
                 "label": "¡Comenzar la aventura!",
                 "data": 1
-            },
-            {
-                "id": 2,
-                "label": "Reiniciar",
-                "data": 0
             }
-        ],
-        "audio": "sample2.m4a"        
+        ]     
     },
     {
         "id": 1,
         "title": "El Secreto del Relojero",
-        "text": "En los años 80, la tecnología digital comenzaba a acaparar toda la atención. Hacía 10 años que los relojes digitales habían llegado para reemplazar al analógico y sus anticuadas manecillas. Esto estaba llevando a la ruina al joven Anthony Benbig. Un excelente relojero de procedencia inglesa asentado en Sevilla que veía como caían sus ventas y su fortuna se reducía drásticamente. La desesperación cambió su carácter y lo llevó a buscar nuevos proyectos. Se volvió taciturno y confinado en el taller que heredó tras la jubilación de su padre,  se topó con un descubrimiento que revolucionaría su escabroso futuro. Su padre, preocupado por su huraño hijo, entró al almacén y lo sorprendió fuera de sí con un deplorable aspecto y se percató de que estaba tramando algo turbio. Tras encontrarse con la negativa de parar ese peligroso proyecto, optó por lo sano y negó la entrada a las instalaciones. El padre no sabía sus verdaderas intenciones, pero no lo dudó tras la negativa a darle explicación alguna y su preocupante estado. Finalmente, denunció ante las autoridades a su hijo, quien sufrió una insoportable persecución que lo llevó a desaparecer. Pero no iba a desistir pués tenía algo muy importante entre manos. Esto terminó por romper la relación con su severo padre, que además de haberle hecho una infancia insoportable para convertirlo en el mejor relojero, ahora le truncaba su mayor proyecto.\nLa obra de Anthony es nada más y nada menos que una máquina del tiempo. Al principio, sus intenciones serían buenas, pero después de sufrir semejante acoso y de vivir apartado de la sociedad en las sombras, tenemos indicios de que sus pretensiones pueden poner en peligro la vida tal y como la conocemos. \nAquí empieza vuestro cometido. No tenéis de que preocuparos, pues vuestra actuación se realizará en la superficie. Un grave problema de los viajes en el tiempo es el cambio de la orografía. Donde hoy hay un cerro, en el pasado no lo había o donde hoy hay un puente, en el pasado había un acantilado. Esto significa que puede aparecer bajo tierra y morir sepultado o sobre 8 o 10 metros de altura y morir en la caida. Pero creemos que ha conseguido corregir esto mediante algún tipo de 'autonivelante. Por ello los portales están en la superficie.\nDesconocemos la forma exacta como lo hace, pero suponemos que de algun modo emplaza cada viaje en el tiempo en lugares claves y cada salto deja un portal que tenéis que cerrar. Para ello debéis encontrarlo, recopilar algunos datos y por último, cerrarlo.Os llegará un listado de los puntos donde ustedes tendréis que actuar. Tenemos varios equipos como el vuestro en distintos emplazamientos, pues el tiempo apremia. \nAnthony está perfeccionando la máquina y creemos que su objetivo ahora es viajar a mediados de 1900 y atentar contra la vida de su padre. Esto crearía una paradoja temporal de consecuencias catastróficas.",
-        "questions": [],
+        "text": "En los años 80, la tecnología digital comenzaba a acaparar toda la atención. Hacía 10 años que los relojes digitales habían llegado para reemplazar al analógico y sus anticuadas manecillas. Esto estaba llevando a la ruina al joven Anthony Benbig. Un excelente relojero de procedencia inglesa asentado en Sevilla que veía como caían sus ventas y su fortuna se reducía drásticamente. La desesperación cambió su carácter y lo llevó a buscar nuevos proyectos. Se volvió taciturno y confinado en el taller que heredó tras la jubilación de su padre,  se topó con un descubrimiento que revolucionaría su escabroso futuro. Su padre, preocupado por su huraño hijo, entró al almacén y lo sorprendió fuera de sí con un deplorable aspecto y se percató de que estaba tramando algo turbio. Tras encontrarse con la negativa de parar ese peligroso proyecto, optó por lo sano y negó la entrada a las instalaciones. El padre no sabía sus verdaderas intenciones, pero no lo dudó tras la negativa a darle explicación alguna y su preocupante estado. Finalmente, denunció ante las autoridades a su hijo, quien sufrió una insoportable persecución que lo llevó a desaparecer. Pero no iba a desistir pués tenía algo muy importante entre manos. Esto terminó por romper la relación con su severo padre, que además de haberle hecho una infancia insoportable para convertirlo en el mejor relojero, ahora le truncaba su mayor proyecto.\nLa obra de Anthony es nada más y nada menos que una máquina del tiempo. Al principio, sus intenciones serían buenas, pero después de sufrir semejante acoso y de vivir apartado de la sociedad en las sombras, tenemos indicios de que sus pretensiones pueden poner en peligro la vida tal y como la conocemos. \nAquí empieza vuestro cometido. No tenéis de que preocuparos, pues vuestra actuación se realizará en la superficie. Un grave problema de los viajes en el tiempo es el cambio de la orografía. Donde hoy hay un cerro, en el pasado no lo había o donde hoy hay un puente, en el pasado había un acantilado. Esto significa que puede aparecer bajo tierra y morir sepultado o sobre 8 o 10 metros de altura y morir en la caida. Pero creemos que ha conseguido corregir esto mediante algún tipo de 'autonivelante. Por ello los portales están en la superficie.\nDesconocemos la forma exacta como lo hace, pero suponemos que de algun modo emplaza cada viaje en el tiempo en lugares claves y cada salto deja un portal que tenéis que cerrar. Para ello debéis encontrarlo, recopilar algunos datos y por último, cerrarlo. Os llegará un listado de los puntos donde ustedes tendréis que actuar. Tenemos varios equipos como el vuestro en distintos emplazamientos, pues el tiempo apremia. \nAnthony está perfeccionando la máquina y creemos que su objetivo ahora es viajar a mediados de 1900 y atentar contra la vida de su padre. Esto crearía una paradoja temporal de consecuencias catastróficas.\n\nDurante siglos, Alcalá de Guadaíra abasteció de agua a Sevilla, a través de una compleja red de canalizaciones cuyo origen se localizaba en la \"Fuente de Santa Lucía\", al sureste del núcleo urbano alcalareño.\nDesde el manantial, una serie de galerías subterráneas excavadas en el sustrato rocoso (las \"minas de agua\") discurrían bajo la ciudad atravesandola de Este a Oeste y posteriormente sirviendo de escondite para nuestro protagonista.",
+        "questions": [
+            {
+                "id": 0,
+                "question_text": "¿En este punto nos encontramos sobre el increíble molino de la mina. Único en España y casi en Europa al sólo existir otro semejante en Suiza. ¿En que siglo se construyó?",
+                "answer":  "XV"                   
+            },
+            {
+                "id": 1,
+                "question_text": "Siglos después y tras dejar de funcionar hace unos 100 años, se levantó sobre sus restos el salon Gutiérrez de Alba. ¿Cuántas ventanas cubiertas completamente con rejas tiene actualmente la fachada principal del teatro?",
+                "answer":  "2"
+            }
+        ],
         "buttons":
         [
             {
                 "id": 1,
-                "label": "Ayuda",
-                "data": -1
+                "label": "Reiniciar",
+                "data": 0
             },
             {
                 "id": 2,
-                "label": "Continuar",
-                "data": 2
-            },
-            {
-                "id": 3,
-                "label": "Reiniciar",
-                "data": 0
+                "label": "Ayuda",
+                "data": -1
             }
         ],
-        "image": "sample2.jpg",
-        "audio": "sample.mp3",
-        "next_coordinates": [37.351437451902875, -5.846107102967426] 
+        "audio": "",
+        "image": "",    
+        "next_coordinates": [37.333762045140226, -5.850244047992537]
     },
     {
         "id": 2,
-        "title": "Portal 1: Puerta Retama",
-        "text": "Desde aquí se puede divisar la ladera del cerro de la fortaleza que en su dia se llamó Qalat Yabir, por su origen almohade. La construcción de este castillo está datada en el siglo XI, aunque muy probablemente, este enclave ya contaba con alguna fortificación 2 siglos antes. \nPara conseguir avanzar, debes responder a un par de preguntas.",
+        "title": "Portal 1: Plaza del Duque",
+        "text": "Desde que hace más de 400 años se construyeran unos balcones y sirviera para realizar fiestas y corridas de toros, la plaza tuvo varios nombres a lo largo de la historia tales como \"Plaza de la Eras\" o \"Primo de Rivera\", hasta que en 1979 se colocara una placa con su actual nombre popular (Plaza del Duque) .",
         "questions":
         [
             {
                 "id": 0,
-                "question_text": "¿Qué rey le dió su configuración actual tras la reconquista en el siglo XIII?",
-                "answer":  "fernando iii"                   
+                "question_text": "¿Cuántos leones azules vierten agua en su fuente?",
+                "answer":  "16"                   
             },
 
             {
                 "id": 1,
-                "question_text": "¿Cuántas torres lo flanquean?",
-                "answer":  "11"                   
+                "question_text": "¿De qué siglo es la casa consistorial que se encuentra en esta plaza?",
+                "answer":  "XVII"                   
             }
         ],
         "buttons": [
@@ -76,60 +76,259 @@
                 "data": -1
             }
         ],
-        "image": "sample.jpg",
-        "audio": "sample.mp3",
-        "next_coordinates": [37.351437451902875, -5.846107102967426]      
+        "image": "",
+        "next_coordinates": [37.33305599825656, -5.851593635845296]         
     },
     {
         "id": 3,
         "title": "Portal 2: Puente ferrocarril de los panaderos",
-        "text": "Estas vías unieron Alcalá con Sevilla durante aproximadamente un siglo y desde aquí, partía el pan cada mañana hacia la capital. Dejó de funcionar en 1975",
+        "text": "Estas vías unieron Alcalá con Sevilla durante aproximadamente un siglo y desde aquí partía el pan artesano cada mañana hacia la capital.",
         "questions":
         [
             {
                 "id": 0,
-                "question_text": "Que dia de julio del 1962 hicieron el último viaje los 5 panaderos?",
-                "answer":  "31"                   
-            },
-
-            {
-                "id": 1,
                 "question_text": "¿Sabes el nombre popular del tren de los panaderos?",
                 "answer":  "la cochinita"                   
-            }
-        ],
-        "buttons": [
+            },
             {
                 "id": 1,
-                "label": "Reiniciar",
-                "data": 0
-            }
-        ],
-        "image": "sample.jpg",
-        "next_coordinates": [37.332167, -5.852671]     
-    },
-    {
-        "id": 4,
-        "title": "Desenlace",
-        "text": "Habéis encontrado la entrada principal de la gruta. No es momento de echarse atrás, pues en el interior está la respuesta del gran enigma. Entráis agachados por la humeda galeria y pronto el techo se vuelve el doble de alto y las paredes ya no rozan vuestros hombros, pero la oscuridad es total y tenéis que encender las linternas. El olor fresco se torna nauseabundo cuando se encontráis con una sala a medio iluminar. La red de túneles continúa, pero esta habitación llama vuestra atención. Al cruzar el umbral, veís como un par de tragaluz de decenas de metros de altura, dejan ver tibiamente la supuesta maquina del tiempo. Al fin la habéis encontrado. El olor hace necesario cubrirse la nariz y boca. Con tal expectación, nadie se había percatado de la figura que reposa en un sillón al fondo de la sala donde la luz es más escasa. Al apuntar a su rostro con la linterna, se confirma que ese demacrado y corrompido cuerpo es el de Anthony Clock. Alguien da un grito ahogado de pavor al verlo. Al instante, unas cintas comienzan a girar en un viejo proyector y un foco ilumina una pizarra amarillenta.\nBienvenidos a mi humilde taller donde he pasado los últimos 20 años, aunque en realidad creo que han sido algunos más, pues tendría que sumar los que he pasado en otras épocas. Efectivamente lo logré. Mi nombre es Anthony Clock y esta es mi funcional máquina del tiempo. Tengo que confesaros que no existe ninguna comisión interinstitucional del tiempo ni nada por el estilo. Todo este embrollo lo he montado yo para ofrecer un incalculable regalo a quien consiga llegar hasta aquí. Conseguí controlar mi rencor y me di cuenta del daño que podía ocasionar si cometía el parricidio. Por lo que desistí en mi empeño y en cambio, en mis viajes he recopilado datos reveladores que podrían cambiar la percepción y el curso de la historia. Lástima que no aguantaré para compartirlo, pués mi cuerpo ha sufrido un deterioro irrecuperable con tantos saltos. Tal vez no haya sabido para a tiempo y me queda muy poco de vida. Como os decía, dejaré programada la máquina para un último viaje. Solo tenéis que introducir la numeración con los datos que habréis recopilado. Después decidir una fecha y disfrutar de mi regalo. No tenéis de que preocuparos, un salto equivale a poco mas que la radiación a la que se expone un cuerpo en una radiografía. Tampoco se preocupéis de la vuelta, pués está programada para haceros regresar automáticamente en un mes. En esos cajones granates tenéis monedas de la mayoría de las épocas y lugares que he ido recopilando, para que podáis moveros, comer y dormir en el momento que elijáis. Por último dejar anotado a que lugar deseáis viajar y por qué. Tal vez conocer a algún personaje histórico, evitar una gran catástrofe o simplemente ser testigos de algún momento importante del pasado. Espero que se me recuerde como algo mas que un simple relojero loco.",
-        "questions":[],
-        "buttons": [
-            {
-               "id": 1,
-               "label": "Geocache encontrado (¡CUIDADO: terminará el juego!)",
-               "data": 5
+                "question_text": "¿En qué año dejó de funcionar?",
+                "answer":  "1975" 
             },
             {
                 "id": 2,
+                "question_text": "¿Cuántos panaderos realizaron el último trayecto años antes de desaparecer?",
+                "answer":  "5"                   
+            }            
+        ],
+        "buttons": [
+            {
+                "id": 1,
                 "label": "Reiniciar",
                 "data": 0
+            },
+            {
+                "id": 2,
+                "label": "Ayuda",
+                "data": -1
             }
         ],
-        "image": "sample.jpg",
-        "next_coordinates": [37.332167, -5.852671]     
+        "image": "",
+        "next_coordinates": [37.33218648444549, -5.852727763629848]   
+    },
+    {
+        "id": 4,
+        "title": "Portal 3: Puerta de la Retama",
+        "text": "Desde aquí hay bifurcaciones de las grutas subterráneas que llegan hasta el interior del castillo, de las cuales algunas pudieron servir para huir en caso de asalto. Podemos divisar la ladera del cerro de la fortaleza que en su dia se llamó Qalat Yabir, por su origen almohade. La construcción de este castillo está datada de hace unos 1000 años, aunque muy probablemente este enclave ya contaba con alguna fortificación 2 siglos antes.",
+        "questions":
+        [
+            {
+                "id": 0,
+                "question_text": "¿En qué siglo le dió su configuración actual tras la reconquista el rey Fernando III?",
+                "answer":  "XIII"                   
+            },
+            {
+                "id": 1,
+                "question_text": "¿Cuántas torres lo flanquean? Desde esta posición no es posible ver la totalidad de las torres, así que puedes consultar Google, ya que subir al castillo nos tomaría mucho tiempo del que no disponemos.",
+                "answer":  "11" 
+            },
+            {
+                "id": 2,
+                "question_text": "De los 4 recorridos que parten de las puertas de la retama, ¿Qué camino tiene menor longitud?",
+                "answer":  "11" 
+            }  
+        ],
+        "buttons": [
+            {
+                "id": 1,
+                "label": "Reiniciar",
+                "data": 0
+            },
+            {
+                "id": 2,
+                "label": "Ayuda",
+                "data": -1
+            }
+        ],
+        "image": "",
+        "next_coordinates": [37.33185438165523, -5.850597155540383]    
     },
     {
         "id": 5,
+        "title": "Portal 4: Molino de la tapada",
+        "text": "Pintoresco molino que reposa junto al popularmente conocido puente romano.",
+        "questions":
+        [
+            {
+                "id": 0,
+                "question_text": "En su castillete podrás observar un símbolo que se repite en varias ocasiones, ¿cuántas puntas tiene dicho símbolo?",
+                "answer":  "6"                   
+            },
+            {
+                "id": 1,
+                "question_text": "Estamos en la ladera del monte Calvario, donde está la Ermita de San Roque. Esta iglesia guarda una figura de Ntra. Sra. De Belén. ¿En qué siglo fue tallada?",
+                "answer":  "XVI" 
+            } 
+        ],
+        "buttons": [
+            {
+                "id": 1,
+                "label": "Reiniciar",
+                "data": 0
+            },
+            {
+                "id": 2,
+                "label": "Ayuda",
+                "data": -1
+            }
+        ],
+        "image": "",
+        "next_coordinates": [37.332609125146995, -5.8447253723850165]    
+    },
+    {
+        "id": 6,
+        "title": "Portal 5: Molino del algarrobo",
+        "text": "Esta construcción es posiblemente la más compleja de la ribera molinera de Alcalá",
+        "questions":
+        [
+            {
+                "id": 0,
+                "question_text": "Su parte mas antigua es la torre que, ¿está fechada en qué siglo?",
+                "answer":  "XIV"                   
+            },
+            {
+                "id": 1,
+                "question_text": "En su interior se pueden observar aún las grandes piedras redondeadas con las que se molía el grano. ¿Cuántas ruedas de molino se pueden apreciar en este en concreto?",
+                "answer":  "3" 
+            } 
+        ],
+        "buttons": [
+            {
+                "id": 1,
+                "label": "Reiniciar",
+                "data": 0
+            },
+            {
+                "id": 2,
+                "label": "Ayuda",
+                "data": -1
+            }
+        ],
+        "image": "",
+        "next_coordinates": []    
+    },
+    {
+        "id": 7,
+        "title": "Portal 6: Molino de la caja",
+        "text": "Sentados tranquilamente en este banco frente al tronco de eucalipto cortado podemos observar un remanso del río, pero está zona no siempre fue tan sosegada. Desde que cruzasteis el río, habréis observado ruinas y restos de construcciones hasta llegar aquí. Y es que en este emplazamiento existió una fábrica de harina muy importante levantada sobre los fuertes cimientos del desaparecido molino de la caja, el mas desconocido de todos. Los hermanos De La Portilla levantaron esta empresa e incorporaron una máquina de vapor a su harinera, algo totalmente novedoso en la época y que le dió a la factoría el nombre de \"La máquina de Alcalá\".",
+        "questions":
+        [
+            {
+                "id": 0,
+                "question_text": "¿De que siglo estamos hablando?",
+                "answer":  "XIX"                   
+            },
+            {
+                "id": 1,
+                "question_text": "¿Cuántos tablones hay en el último puente que habéis cruzado y que está junto al banco?",
+                "answer":  "38" 
+            } 
+        ],
+        "buttons": [
+            {
+                "id": 1,
+                "label": "Reiniciar",
+                "data": 0
+            },
+            {
+                "id": 2,
+                "label": "Ayuda",
+                "data": -1
+            }
+        ],
+        "image": "",
+        "next_coordinates": []    
+    },
+    {
+        "id": 8,
+        "title": "Portal 7: Quiosco de la música",
+        "text": "Pasando la recientemente remodelada \"Casa del Guarda\" y el peculiar \"Molino de Oromana\" encontramos el \"Quiosco de la musica\", una plataforma techada donde durante mucho tiempo se reunieron músicos de toda indole para tocar en un entorno plácido.",
+        "questions":
+        [
+            {
+                "id": 0,
+                "question_text": "¿Cuantas columnas tiene dicho emplazamiento?",
+                "answer":  "8"                   
+            },
+            {
+                "id": 1,
+                "question_text": "Estamos cerca de la entrada por donde Anthony accedía a la gruta y por alguno de estos respiraderos pasaría las horas escuchando las notas desde el interior en su soledad. Cercano al molino de oromana tenemos varías lumbreras de la gruta-mina excavadas en el talud. \nMediante atarjea se abastecían de agua los rodeznos para la molienda. La fuente de oromana se unía a la de Santa Lucía atravesando el río Guadaíra y abastecieron de agua a Sevilla gracias al califa almohade Abu Yaqub Yusuf, que culminó las antiguas excavaciones y unió Alcalá con la capital aprovechando acequias romanas, llegando hasta el centro de la ciudad con la construcción de los Caños de Carmona; ¿en qué siglo? ",
+                "answer":  "XII" 
+            } ,
+            {
+                "id": 2,
+                "question_text": "Para recibir las coordenadas de la entrada de la gruta debéis utilizar los datos recopilados. En cada uno de los puntos que habéis visitado habéis obtenido un número de 1 o 2 dígitos que tenéis que reordenar para que los portales se alineen y la linea temporal se restablezca. Responded con el número completo, sin guiones ni separación alguna. En total son 11 dígitos.",
+                "answer": "83261611385"
+            }
+        ],
+        "buttons": [
+            {
+                "id": 1,
+                "label": "Reiniciar",
+                "data": 0
+            },
+            {
+                "id": 2,
+                "label": "Ayuda",
+                "data": -1
+            }
+        ],
+        "image": "",
+        "next_coordinates": []      
+    },
+    {
+        "id": 9,
+        "title": "La gruta de Anthony",
+        "text": "¡Habéis descubierto la ubicación del escondite secreto de Anthony! Dirigíos allí antes de que sea demasiado tarde.",
+        "questions":
+        [],
+        "buttons": [
+            {
+                "id": 1,
+                "label": "Reiniciar",
+                "data": 0
+            },
+            {
+                "id": 2,
+                "label": "Ayuda",
+                "data": -1
+            }
+        ],
+        "image": "",
+        "next_coordinates": []     
+    },
+    {
+        "id": 10,
+        "title": "Bienvenidos",
+        "text": "Habéis encontrado la entrada principal de la gruta. No es momento de echarse atrás, pues en el interior está la respuesta del gran enigma. Entráis agachados por la humeda galeria y pronto el techo se vuelve el doble de alto y las paredes ya no rozan vuestros hombros, pero la oscuridad es total y tenéis que encender las linternas. Después de un pequeño ascenso, el corredor comienza a descender con una importante inclinación. El suelo es resbaladizo y cuesta mantenerse en pie. El techo está prácticamente cubierto de ramas tapando el color tiznado del uso de antorchas en la antigüedad. Un derrumbe obstaculiza el paso cuando el terreno se volvía firme y es necesario retirar algunas rocas para continuar, pero sorprendente el techo se vuelve bastante alto llegando a tener 6 metros en algun punto de esta galería principal. El olor fresco se torna nauseabundo cuando se encontráis con una sala a medio iluminar. La red de túneles continúa, pero esta habitación llama vuestra atención. Al cruzar el umbral, veís como un par de tragaluz de decenas de metros de altura, dejan ver tibiamente la supuesta maquina del tiempo. Al fin la habéis encontrado. El hedor hace necesario cubrirse la nariz y boca. Con tal expectación, nadie se había percatado de la figura que reposa en un sillón al fondo de la sala donde la luz es más escasa. Al apuntar a su rostro con la linterna, se confirma que ese demacrado y corrompido cuerpo es el de Anthony Clock. Alguien da un grito ahogado de pavor al verlo. Al instante, unas cintas comienzan a girar en un viejo proyector y un foco ilumina una pizarra amarillenta.\nBienvenidos a mi humilde taller donde he vivido los últimos 20 años, aunque en realidad creo que han sido algunos más, pues tendría que sumar los que he pasado en otras épocas. Efectivamente lo logré. Mi nombre es Anthony Clock y esta es mi funcional máquina del tiempo. Tengo que confesaros que no existe ninguna comisión interinstitucional del tiempo ni nada por el estilo. Todo este embrollo lo he montado yo para ofrecer un incalculable regalo a quien consiga llegar hasta aquí. Conseguí controlar mi rencor y me di cuenta del daño que podía ocasionar si cometía el parricidio. Por lo que desistí en mi empeño y en cambio, en mis viajes he recopilado datos reveladores que podrían cambiar la percepción y el curso de la historia. Lástima que no aguantaré para compartirlo, pués mi cuerpo ha sufrido un deterioro irrecuperable con tantos saltos temporales. Tal vez no haya sabido parar a tiempo y me queda muy poco de vida. Como os decía, dejaré programada la máquina para un último viaje. Solo tenéis que introducir una fecha y disfrutar de mi regalo. No tenéis de que preocuparos, un salto equivale a poco mas que la radiación a la que se expone un cuerpo en una radiografía. Tampoco se preocupéis de la vuelta, pués está programada para haceros regresar automáticamente en un mes. En esos cajones granates tenéis monedas de la mayoría de las épocas y lugares que he ido recopilando, para que podáis moveros, comer y dormir en el momento que elijáis. Por último dejar anotado a que lugar deseáis viajar y por qué. Tal vez conocer a algún personaje histórico, evitar una gran catástrofe o simplemente ser testigos de algún momento importante del pasado. Espero que se me recuerde como algo mas que un simple relojero loco.\n\n Es hora de buscar el geocaché. Pulsad el botón de abajo cuando lo hayáis encontrado y la historia terminará.",
+        "questions":
+        [],
+        "buttons": [
+            {
+                "id": 1,
+                "label": "Geocache encontrado",
+                "data": 5
+             },
+             {
+                 "id": 2,
+                 "label": "Reiniciar",
+                 "data": 0
+             }
+        ],
+        "audio": ""
+    },
+    {
+        "id": 11,
         "title": "GRACIAS",
         "text": "El mundo te agradece tu labor evitando la catástrofe. Esperamos que lo hayas pasado bien.",
         "questions":[],
