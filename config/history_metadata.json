@@ -20,7 +20,7 @@
         "questions": [
             {
                 "id": 0,
-                "question_text": "¿En este punto nos encontramos sobre el increíble molino de la mina. Único en España y casi en Europa al sólo existir otro semejante en Suiza. ¿En que siglo se construyó?",
+                "question_text": "¿En este punto nos encontramos sobre el increíble molino de la mina, único en España y casi en Europa al sólo existir otro semejante en Suiza. ¿En qué siglo se construyó?",
                 "answer":  "XV"                   
             },
             {
@@ -35,11 +35,6 @@
                 "id": 1,
                 "label": "Reiniciar",
                 "data": 0
-            },
-            {
-                "id": 2,
-                "label": "Ayuda",
-                "data": -1
             }
         ],
         "audio": "",
@@ -49,7 +44,7 @@
     {
         "id": 2,
         "title": "Portal 1: Plaza del Duque",
-        "text": "Desde que hace más de 400 años se construyeran unos balcones y sirviera para realizar fiestas y corridas de toros, la plaza tuvo varios nombres a lo largo de la historia tales como \"Plaza de la Eras\" o \"Primo de Rivera\", hasta que en 1979 se colocara una placa con su actual nombre popular (Plaza del Duque) .",
+        "text": "Comienzo a oir un leve zumbido similar al que hace un mosquito en el silencio de la noche y a cada paso aumenta la potencia. Veo una especie de cortina de agua que hace borrosa la visión de lo que hay detras de ella. Voy a meter la mano en ella. ¡Dios! Está muy caliente y noto el brazo muy pesado. ¡La he perdido de vista! ¡Mi mano no está!. La retiro rápidamente y vuelve a aparecer en su sitio, aunque la tengo acolchada y me cuesta mover los dedos. No es momento de echarse atrás y con todos mirandome debo dar el paso. Avanzo decidido para meter la cabeza e impacto con una corriente prácticamente invisible que me acelera el corazón y lo vuelve todo de un blanco cegador. El zumbido es insoportable y noto como estando quieto, no paro de dar vueltas en todas direcciones.\nAhora el sonido va desapareciendo, la visión se va aclarando y voy recuperando el pulso y el aliento.\n\nTodo es diferente aquí; el ambiente es mucho mas limpio, las calles estan embarradas entiendo por haber estado lloviendo y los vecinos reponen las guirnaldas dañadas. Estoy en la Plaza del Duque, aunque en este momento no es conocida por ese nombre. Este lugar, que en el futuro será conocido como \"Plaza de la Eras\" y más tarde como \"Primo de Rivera\", es un bullicio de actividad, con balcones adornados para las fiestas y corridas de toros que se celebran aquí. No será hasta 1979 cuando se colocará una placa con su nombre popular actual, Plaza del Duque. Observo la majestuosa casa consistorial que se encuentra en costrucción, un edificio que es un testimonio de la arquitectura de la época. Los carruajes tirados por caballos circulan por las calles empedradas y la gente viste ropajes que parecen sacados de un cuadro antiguo.",
         "questions":
         [
             {
@@ -60,7 +55,7 @@
 
             {
                 "id": 1,
-                "question_text": "¿De qué siglo es la casa consistorial que se encuentra en esta plaza?",
+                "question_text": "¿En qué siglo nos encontramos si la casa consistorial está siendo construida?",
                 "answer":  "XVII"                   
             }
         ],
@@ -69,11 +64,6 @@
                 "id": 1,
                 "label": "Reiniciar",
                 "data": 0
-            },
-            {
-                "id": 2,
-                "label": "Ayuda",
-                "data": -1
             }
         ],
         "image": "",
@@ -106,11 +96,6 @@
                 "id": 1,
                 "label": "Reiniciar",
                 "data": 0
-            },
-            {
-                "id": 2,
-                "label": "Ayuda",
-                "data": -1
             }
         ],
         "image": "",
@@ -135,7 +120,7 @@
             {
                 "id": 2,
                 "question_text": "De los 4 recorridos que parten de las puertas de la retama, ¿Qué camino tiene menor longitud?",
-                "answer":  "11" 
+                "answer":  "Camino de la Fuensanta" 
             }  
         ],
         "buttons": [
@@ -143,11 +128,6 @@
                 "id": 1,
                 "label": "Reiniciar",
                 "data": 0
-            },
-            {
-                "id": 2,
-                "label": "Ayuda",
-                "data": -1
             }
         ],
         "image": "",
@@ -175,11 +155,6 @@
                 "id": 1,
                 "label": "Reiniciar",
                 "data": 0
-            },
-            {
-                "id": 2,
-                "label": "Ayuda",
-                "data": -1
             }
         ],
         "image": "",
@@ -207,11 +182,6 @@
                 "id": 1,
                 "label": "Reiniciar",
                 "data": 0
-            },
-            {
-                "id": 2,
-                "label": "Ayuda",
-                "data": -1
             }
         ],
         "image": "",
@@ -239,11 +209,6 @@
                 "id": 1,
                 "label": "Reiniciar",
                 "data": 0
-            },
-            {
-                "id": 2,
-                "label": "Ayuda",
-                "data": -1
             }
         ],
         "image": "",
@@ -276,11 +241,6 @@
                 "id": 1,
                 "label": "Reiniciar",
                 "data": 0
-            },
-            {
-                "id": 2,
-                "label": "Ayuda",
-                "data": -1
             }
         ],
         "image": "",
@@ -297,11 +257,6 @@
                 "id": 1,
                 "label": "Reiniciar",
                 "data": 0
-            },
-            {
-                "id": 2,
-                "label": "Ayuda",
-                "data": -1
             }
         ],
         "image": "",

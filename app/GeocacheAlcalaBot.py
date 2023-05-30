@@ -15,7 +15,7 @@ BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 CONFIG_PATH = 'config/history_metadata.json'
 
 # Radius of distance to accept to the next objective in kilometers during navigation
-LOCATION_PRECISION = 0.02
+LOCATION_PRECISION = 0.005
 
 HELP_QUERY_URL = 'https://www.google.com/maps/search/?api=1&query={lat},{lon}'
 
@@ -126,8 +126,6 @@ def button_tap(update: Update, context: CallbackContext) -> None:
     chat_id = update.effective_chat.id
     if update.callback_query and update.callback_query.data:
         next_step = int(update.callback_query.data) 
-    elif update.message and update.message.text:
-        next_step = 'skip'
     else:
         logging.error('Error while retrieving data from the button.')
         return
@@ -164,7 +162,7 @@ def button_tap(update: Update, context: CallbackContext) -> None:
             conn.commit()
             cur.close()
         else: 
-            context.bot.send_message(update.effective_chat.id, "Lo siento, no hay ayuda disponible en este momento.")
+            context.bot.send_message(update.effective_chat.id, "Lo siento, no hay ayuda disponible en este momento.")   
     else:
         # call the update function to send the next message
         send_next_step(next_step, update, context)
@@ -172,12 +170,6 @@ def button_tap(update: Update, context: CallbackContext) -> None:
 def send_next_step(step_id, update: Update, context: CallbackContext):    
     chat_id = update.effective_chat.id
     current_chat_data = get_current_chat_data(chat_id)
-
-    # TODO: Delete this, for debugging without navigation        
-    if step_id == 'skip':        
-        current_step = current_chat_data[0]
-        step_id = current_step + 1
-
     current_step_data = get_config_data(step_id)
 
     # Move to target step and reset current_question to 0        
@@ -238,20 +230,20 @@ def send_next_step(step_id, update: Update, context: CallbackContext):
 
     # Send audio if any
     if audio_config := current_step_data.get('audio'):
-        send_media(context, update.effective_chat.id, 'audio', 'audio/' + audio_config)            
+        send_media(context, update.effective_chat.id, 'audio', 'audio/' + audio_config)     
 
-    # Send image if any
-    if image_config:= current_step_data.get('image'):
-        send_media(context, update.effective_chat.id, 'photo', 'image/' + image_config)
+    # Get first question and send it
+    current_chat_data = get_current_chat_data(update.effective_chat.id)
+    current_step_data = get_config_data(current_chat_data[0])
 
-    # If there is a navigation phase (next_coordinates is not null), include the button to send the location
-    if current_step_data.get('next_coordinates'):
-        keyboard = [[KeyboardButton(text="Comprobar ubicación", request_location=True)]]
-        reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
-        context.bot.send_message(
-            update.effective_chat.id,
-            'Cuando estés en las coordenadas, pulsa en "Comprobar ubicación" para comprobarlo.',
-            reply_markup=reply_markup)
+    questions = current_step_data.get('questions')
+    for question in questions:
+        if question['id'] == 0:
+            send_question(update, context, question)
+            break
+
+    # If the code gets here, there are not questions in this step. Just advance to the next one
+    logging.warning('No question was found for current step.')        
 
 def send_media(context, chat_id, type, path):
     """
@@ -283,7 +275,7 @@ def answer(update: Update, context: CallbackContext) -> None:
     """Process answer."""
     ## TODO: Remove this for debugging
     if update.message and update.message.text.lower() == "skip":
-        button_tap(update, context)
+        on_location_found(update, context)
         return
     correct_answer = False
 
@@ -310,7 +302,7 @@ def answer(update: Update, context: CallbackContext) -> None:
                 break 
         if current_answer:    
             if update.message and update.message.text.lower() == current_answer.lower():
-                text = "Genial, se vé que sabes usar Google!"
+                text = "Correcto"
                 correct_answer = True
             else:
                 text = "¿Estás seguro? Inténtalo de nuevo"
@@ -321,24 +313,47 @@ def answer(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(text)
 
     if correct_answer:
-        ## TODO: Make this an internal method from the Geocache Class and reuse
         # Check if there are pending questions
         next_question = None
 
         for question in questions:
             if question['id'] == current_question+1:
                 next_question = question
+                break
         cur = conn.cursor()
-        if next_question:           
-            # Update current_question in DB            
-            cur.execute("UPDATE chat_data SET current_question=%s WHERE chat_id=%s",(question['id'], chat_id))
-            
+        # Update current_question in DB       
+        cur.execute("UPDATE chat_data SET current_question=%s WHERE chat_id=%s",(current_question+1, chat_id))
+        if next_question:                                        
             send_question(update, context, next_question)
         else:
-            # No questions pending. Move to next step if any
-            next_step = current_step+1
-            cur.execute("UPDATE chat_data SET current_step=%s, current_question=%s WHERE chat_id=%s",(next_step, 0, chat_id))
-            send_next_step(next_step, update, context)
+            # Send message about portal closed and navigation start if there is coordinates
+            # Send image if any
+            if image_config:= current_step_data.get('image'):
+                send_media(context, update.effective_chat.id, 'photo', 'image/' + image_config)
+
+            # If there is a navigation phase (next_coordinates is not null), include the button to send the location
+            if current_step_data.get('next_coordinates'):
+                keyboard = [[KeyboardButton(text="Radar", request_location=True)]]
+                reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
+                context.bot.send_message(
+                    update.effective_chat.id,
+                    f'Gracias a vuestras respuestas, el portal se ha cerrado. Avancemos hacia el siguiente objetivo. \n\nTenéis a vuestra disposición un dispositivo de localización. El radar portatemporal detecta las ondas que emiten los portales mediante una lectura de ciclos por segundo, o herzios. El dispositivo convierte estos datos en distancia longitudinal. Cuando activéis el botón "Radar" se reflejará en vuestra pantalla a modo de dirección Norte, Sur, Este u Oeste y distancia en metros. La ubicación de los portales la tenemos aproximadas y una vez allí activaréis el radar portatemporal para encontrar el punto exacto. Como ya os he avisado, estos portales son inestables e irradian ondas perjudiciales para la salud dependiendo del tamaño que tenga en el momento que os acerquéis. No sabemos con exactitud el alcance que pueden llegar a tener, pero sabemos que por exponerse a un solo portal no revestirá gravedad, pero si una continua exposición. Por ello, si trabajáis en equipo, os rogamos encarecidamente hacerlo por turnos para no acumular mucha radiactividad.',
+                    reply_markup=reply_markup)  
+
+                # Send help button
+                button = [        
+                    {
+                        "id": 1,
+                        "label": "Ayuda",
+                        "data": -1
+                    }
+                ]   
+                markup = build_buttons_markup(button)
+
+                context.bot.send_message(
+                    update.effective_chat.id,
+                    'Aquí tenéis el botón de ayuda en caso de que os perdáis. ¡Recordad no abusar de él!',
+                    reply_markup=markup)          
 
         conn.commit()
         cur.close()
@@ -387,21 +402,43 @@ def location(update: Update, context: CallbackContext):
         update.message.reply_text(f'El objetivo se encuentra a {round(distance*1000)} metros en dirección {bearing_name} ({bearing}° respecto del Norte).')
 
 def on_location_found(update: Update, context: CallbackContext):
-    update.message.reply_text(f'¡Enhorabuena, has llegado al siguiente destino!',
-                            reply_markup=None)
+    # Remove the navigation button
+    text = f'Estáis demasiado cerca del portal, es hora de que alguno de ustedes tome el mando y demuestre de que pasta está hecho. Coge el radar y continúa solo hasta el portal mientras vas narrando lo que ocurre a tus compañeros.'
+    update.message.reply_text(text, reply_markup=None)
     
-    # Get first question and send it
-    current_chat_data = get_current_chat_data(update.effective_chat.id)
-    current_step_data = get_config_data(current_chat_data[0])
+    # Find data from current chat to get the target coordinates
+    chat_id = update.effective_chat.id
+    current_chat_data = get_current_chat_data(chat_id)
+    current_step = current_chat_data[0]
+    current_step_data = get_config_data(current_step)
 
-    questions = current_step_data.get('questions')
-    for question in questions:
-        if question['id'] == 0:
-            send_question(update, context, question)
-            break
+    if not current_step_data:
+        return
+    
+    next_step = current_step+1
 
-    # If the code gets here, there are not questions in this step. Just advance to the next one
-    logging.warning('No question was found for current step.')    
+    # Send a button for the user to confirm that they want to move to next point
+    button = [        
+        {
+            "id": 1,
+            "label": "Estoy listo",
+            "data": next_step
+        }
+    ]
+
+    markup = build_buttons_markup(button)
+
+    # Send history markup (text + buttons)
+    context.bot.send_message(
+        chat_id,
+        'Pulsa el botón cuando estés listo',
+        parse_mode=ParseMode.HTML,
+        reply_markup=markup
+    )  
+
+    # Move to next step if any
+    cur.execute("UPDATE chat_data SET current_step=%s, current_question=%s WHERE chat_id=%s",(next_step, 0, chat_id))
+    send_next_step(next_step, update, context)
 
 def main() -> None:
     updater = Updater(BOT_TOKEN)
