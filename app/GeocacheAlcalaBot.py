@@ -14,8 +14,8 @@ BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 
 CONFIG_PATH = 'config/history_metadata.json'
 
-# Radius of distance to accept to the next objective in kilometers during navigation
-LOCATION_PRECISION = 0.005
+# Radius of distance to accept to the next objective in kilometers during navigation (50 meters)
+LOCATION_PRECISION = 0.05
 
 HELP_QUERY_URL = 'https://www.google.com/maps/search/?api=1&query={lat},{lon}'
 
