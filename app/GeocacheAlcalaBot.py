@@ -204,6 +204,7 @@ def send_next_step(step_id, update: Update, context: CallbackContext):
 
         final_report =f"Tu tiempo total ha sido de {elapsed_seconds // 3600} horas y {(elapsed_seconds % 3600) // 60} minutos y has usado {data[1]} ayudas. Por lo tanto, tu tiempo final es de {total_seconds // 3600} horas y {(total_seconds % 3600) // 60} minutos (5 min más por cada ayuda)."
 
+        send_media(context, chat_id, 'photo', 'image/gracias.jpg')
         context.bot.send_message(update.effective_chat.id, final_report)
 
     conn.commit()
