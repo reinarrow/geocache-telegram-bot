@@ -38,7 +38,7 @@
             }
         ],
         "audio": "intro.m4a",
-        "image": "",    
+        "image": "1-duque.png",    
         "next_coordinates": [37.333762045140226, -5.850244047992537]
     },
     {
@@ -66,7 +66,7 @@
                 "data": 0
             }
         ],
-        "image": "",
+        "image": "2-puente.png",
         "next_coordinates": [37.33305599825656, -5.851593635845296]         
     },
     {
@@ -98,7 +98,7 @@
                 "data": 0
             }
         ],
-        "image": "",
+        "image": "3-retama.png",
         "next_coordinates": [37.33218648444549, -5.852727763629848]   
     },
     {
@@ -130,7 +130,7 @@
                 "data": 0
             }
         ],
-        "image": "",
+        "image": "4-molino-tapada.png",
         "next_coordinates": [37.33185438165523, -5.850597155540383]    
     },
     {
@@ -157,7 +157,7 @@
                 "data": 0
             }
         ],
-        "image": "",
+        "image": "5-molino-algarrobo.png",
         "next_coordinates": [37.332609125146995, -5.8447253723850165]    
     },
     {
@@ -184,7 +184,7 @@
                 "data": 0
             }
         ],
-        "image": "",
+        "image": "6-molino-caja.png",
         "next_coordinates": [37.333302353495576, -5.843457726917385]    
     },
     {
@@ -211,7 +211,7 @@
                 "data": 0
             }
         ],
-        "image": "",
+        "image": "7-quisco-musica.png",
         "next_coordinates": [37.32930270960089, -5.843335243145915]    
     },
     {
@@ -243,7 +243,7 @@
                 "data": 0
             }
         ],
-        "image": "",
+        "image": "8-cueva.png",
         "next_coordinates": [37.32657345350184, -5.842452123336985]      
     },
     {
