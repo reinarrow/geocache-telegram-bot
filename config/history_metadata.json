@@ -119,7 +119,7 @@
             },
             {
                 "id": 2,
-                "question_text": "De los 4 recorridos que parten de las puertas de la retama, ¿Qué camino tiene menor longitud?",
+                "question_text": "Lo que sí podéis consultar visualmente es: De los 4 caminos que existen en la zona de la retama, ¿Qué camino tiene menor longitud?",
                 "answer":  "Camino de la Fuensanta" 
             }  
         ],
@@ -211,7 +211,7 @@
                 "data": 0
             }
         ],
-        "image": "7-quisco-musica.png",
+        "image": "7-quiosco-musica.png",
         "next_coordinates": [37.32930270960089, -5.843335243145915]    
     },
     {
