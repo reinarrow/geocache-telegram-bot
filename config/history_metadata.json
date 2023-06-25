@@ -2,7 +2,7 @@
     {
         "id": 0,
         "title": "Hola, soy GeocacheBot",
-        "text": "Encantado de conocerte. Mi propósito es guiarte a lo largo de esta aventura intertemporal hasta entontrar el Geocaché final. Pulsa el siguiente botón para comenzar la historia. \n\nUna vez que lo pulses, el tiempo comenzará a contar, así que asegúrate de estar listo para emprender el viaje antes de hacerlo.\n\nEn cada etapa, recibirás una imagen con una localización aproximada en el mapa. Para avanzar en la historia y recibir nueva información, deberás acudir a dicha localización. Si te atascas durante la navegación, pulsa el botón de ayuda para obtener las coordenadas exactas. Pero cuidado, esto hará que tu tiempo total aumente 5 minutos con cada uso, con el peligro de que llegues a un punto de no retorno en tu viaje en el tiempo. ¡No abuses del botón!",
+        "text": "Encantado de conoceros. Mi propósito es guiaros a lo largo de esta aventura intertemporal hasta entontrar el Geocaché final. Pulsad el siguiente botón para comenzar la historia. \n\nUna vez que lo pulséis, el tiempo comenzará a contar, así que asegúraos de estar listo para emprender el viaje antes de hacerlo.\n\nEn cada etapa, recibiréis una imagen con una localización aproximada de ciertos portales temporales en el mapa. Para avanzar en la historia y recibir nueva información, deberéis acudir a dicha localización. Tenéis a vuestra disposición un dispositivo de localización. El radar portatemporal detecta las ondas que emiten los portales mediante una lectura de ciclos por segundo, o herzios. El dispositivo convierte estos datos en distancia longitudinal. Cuando activéis el botón \"Radar\" se reflejará en vuestra pantalla a modo de dirección Norte, Sur, Este u Oeste y distancia en metros. La ubicación de los portales las tenemos aproximadas y una vez allí activaréis el radar portatemporal para encontrar el punto exacto. Como ya os he avisado, estos portales son inestables e irradian ondas perjudiciales para la salud dependiendo del tamaño que tenga en el momento que os acerquéis. No sabemos con exactitud el alcance que pueden llegar a tener, pero sabemos que por exponerse a un solo portal no revestirá gravedad, pero sí una continua exposición. Por ello, si trabajáis en equipo, os rogamos encarecidamente hacerlo por turnos para no acumular mucha radiactividad.\n\nSi os atascáis durante la navegación, pulsad el botón de ayuda para obtener las coordenadas exactas. Pero cuidado, esto hará que el tiempo total aumente 5 minutos con cada uso, con el peligro de que lleguéis a un punto de no retorno en vuestro viaje en el tiempo. ¡No abuséis del botón!",
         "questions": [],
         "buttons":
         [
@@ -17,10 +17,27 @@
         "id": 1,
         "title": "El Secreto del Relojero",
         "text": "",
+        "questions": [],
+        "buttons":
+        [
+            {
+                "id": 1,
+                "label": "Reiniciar",
+                "data": 0
+            }
+        ],
+        "audio": "intro.m4a",
+        "image": "0-teatro.jpg",    
+        "next_coordinates": [37.33530842606043, -5.847702419076186]
+    },
+    {
+        "id": 2,
+        "title": "Comienzo",
+        "text": "Durante siglos, Alcalá de Guadaíra abasteció de agua a Sevilla, a través de una compleja red de canalizaciones cuyo origen se localizaba en la \"Fuente de Santa Lucía\", al sureste del núcleo urbano alcalareño.\n\nDesde el manantial, una serie de galerías subterráneas excavadas en el sustrato rocoso (las \"minas de agua\") discurrían bajo la ciudad atravesándola de Este a Oeste y posteriormente sirviendo de escondite para nuestro protagonista.",
         "questions": [
             {
                 "id": 0,
-                "question_text": "¿En este punto nos encontramos sobre el increíble molino de la mina, único en España y casi en Europa al sólo existir otro semejante en Suiza. ¿En qué siglo se construyó?",
+                "question_text": "En este punto nos encontramos sobre el increíble molino de la mina, único en España y casi en Europa al sólo existir otro semejante en Suiza. ¿En qué siglo se construyó?",
                 "answer":  "XV"                   
             },
             {
@@ -37,25 +54,24 @@
                 "data": 0
             }
         ],
-        "audio": "intro.m4a",
         "image": "1-duque.png",    
         "next_coordinates": [37.333762045140226, -5.850244047992537]
     },
     {
-        "id": 2,
+        "id": 3,
         "title": "Portal 1: Plaza del Duque",
-        "text": "Comienzo a oir un leve zumbido similar al que hace un mosquito en el silencio de la noche y a cada paso aumenta la potencia. Veo una especie de cortina de agua que hace borrosa la visión de lo que hay detras de ella. Voy a meter la mano en ella. ¡Dios! Está muy caliente y noto el brazo muy pesado. ¡La he perdido de vista! ¡Mi mano no está!. La retiro rápidamente y vuelve a aparecer en su sitio, aunque la tengo acolchada y me cuesta mover los dedos. No es momento de echarse atrás y con todos mirandome debo dar el paso. Avanzo decidido para meter la cabeza e impacto con una corriente prácticamente invisible que me acelera el corazón y lo vuelve todo de un blanco cegador. El zumbido es insoportable y noto como estando quieto, no paro de dar vueltas en todas direcciones.\nAhora el sonido va desapareciendo, la visión se va aclarando y voy recuperando el pulso y el aliento.\n\nTodo es diferente aquí; el ambiente es mucho mas limpio, las calles estan embarradas entiendo por haber estado lloviendo y los vecinos reponen las guirnaldas dañadas. Estoy en la Plaza del Duque, aunque en este momento no es conocida por ese nombre. Este lugar, que en el futuro será conocido como \"Plaza de la Eras\" y más tarde como \"Primo de Rivera\", es un bullicio de actividad, con balcones adornados para las fiestas y corridas de toros que se celebran aquí. No será hasta 1979 cuando se colocará una placa con su nombre popular actual, Plaza del Duque. Observo la majestuosa casa consistorial que se encuentra en costrucción, un edificio que es un testimonio de la arquitectura de la época. Los carruajes tirados por caballos circulan por las calles empedradas y la gente viste ropajes que parecen sacados de un cuadro antiguo.",
+        "text": "Es mi turno y allá voy. Debo estar soñando. Ahí había un enorme edificio que no está y en su ausencia se puede divisar perfectamente el cauce del río. También puedo ver que en la otra orilla no hay más que un cortijo, ni rastro de las casas del campo de las Beatas al cruzar el puente. Todo lo que alcanza a la vista es campo. En la otra dirección puedo ver el ayuntamiento, que es el edificio más grande. Es un hospital del que entran y salen monjes.\n\nLos vecinos se ven ridículos con esas vestimentas mientras cuelgan guirnaldas y adornan balcones. En lugar de palmeras y naranjos, hay una improvisada plaza de toros de andamios en todo el centro.\n\nAhora repican las campanas de Santiago que parece estar mas cerca sin tantos edificios por medio. ¿Pero qué ven mis ojos?. Las murallas del castillo son enormes recortando un cielo especialmente azul. No me quiero marchar, me quedaría aquí asomado viendo la vida que tiene esta plaza.\n\n¡Chicos agarradme ahí detras que regreso!",
         "questions":
         [
             {
                 "id": 0,
-                "question_text": "¿Cuántos leones azules vierten agua en su fuente?",
+                "question_text": "Desde que hace mas de 400 años se construyeran unos balcones y sirviera para realizar fiestas y corridas de toros, la plaza tuvo varios nombres a lo largo de la historia tales como \"Plaza de la Eras\" o \"Primo de Rivera\", hasta que hace medio siglo se colocara una placa con su nombre popular (Plaza del Duque)\n\n¿Cuántos leones azules vierten agua en su fuente?",
                 "answer":  "16"                   
             },
 
             {
                 "id": 1,
-                "question_text": "¿En qué siglo nos encontramos si la casa consistorial está siendo construida?",
+                "question_text": "¿De qué siglo es la casa consistorial que se encuentra en esta plaza?",
                 "answer":  "XVII"                   
             }
         ],
@@ -70,14 +86,14 @@
         "next_coordinates": [37.33305599825656, -5.851593635845296]         
     },
     {
-        "id": 3,
+        "id": 4,
         "title": "Portal 2: Puente ferrocarril de los panaderos",
-        "text": "Estas vías unieron Alcalá con Sevilla durante aproximadamente un siglo y desde aquí partía el pan artesano cada mañana hacia la capital.",
+        "text": "Ya empiezo a oír un gran bullicio. Hay un tren parado con tres tipos de vagones; para personas, para mercancías y otro descubierto donde están metiendo burros con alforjas cargadas de pan. Puedo saborear el olor a pan recién hecho, aunque ahora el humo de la locomotora se hace protagonista. El tren ha arrancado con dos silbidos prolongados tras varios gritos de \"pasajeros al tren\". El chirrido de las vías y el traqueteo van en aumento. ¡Un momento! Estoy en medio de la vía y cada vez está más cerca. El maquinista ha tenido que verme y ha hecho sonar el silbato y ahora hace retumbar una trompa. Me he quedado petrificado y no puedo moverme. ¡Socorro! ¡Tirad de mí! ¡Ayudadme!.\n\n¡Oh Dios, la que he liado! Lo último que he visto ha sido al vagón abierto tumbarse. Las bestias asustadas por el ruido lo han hecho descarrilar y ha tirado del resto de vagones. La locomotora ha terminado por volcar justo antes de entrar al puente. Es lo último que he visto antes de que todo se volviese blanco y llegara el silencio.",
         "questions":
         [
             {
                 "id": 0,
-                "question_text": "¿Sabes el nombre popular del tren de los panaderos?",
+                "question_text": "Estas vías unieron Alcalá con Sevilla durante aproximadamente un siglo y desde aquí partía el pan artesano cada mañana hacia la capital.\n\n¿Sabes el nombre popular del tren de los panaderos?",
                 "answer":  "la cochinita"                   
             },
             {
@@ -102,14 +118,14 @@
         "next_coordinates": [37.33218648444549, -5.852727763629848]   
     },
     {
-        "id": 4,
+        "id": 5,
         "title": "Portal 3: Puerta de la Retama",
-        "text": "Desde aquí hay bifurcaciones de las grutas subterráneas que llegan hasta el interior del castillo, de las cuales algunas pudieron servir para huir en caso de asalto. Podemos divisar la ladera del cerro de la fortaleza que en su dia se llamó Qalat Yabir, por su origen almohade. La construcción de este castillo está datada de hace unos 1000 años, aunque muy probablemente este enclave ya contaba con alguna fortificación 2 siglos antes.",
+        "text": "¿Pero dónde estoy? Aquí no hay nada, ni rastro de Alcalá. Puedo ver movimiento en esa ladera con algunas murallas bastante decadentes. Da la impresión de que aquí se está librando una batalla. Sin duda he sido el que ha tenido peor suerte. No sé explicarlo, pero no me da sensación de seguridad estando aquí en medio rodeado de hombres con espadas y sabe Dios qué otras armas punzantes. Siento no ser de más ayuda, pero si me espero a que pase algo aquí, lo mas probable es que aparezca un soldado de detrás de uno de estos matojos y me corte la cabeza",
         "questions":
         [
             {
                 "id": 0,
-                "question_text": "¿En qué siglo le dió su configuración actual tras la reconquista el rey Fernando III?",
+                "question_text": "Desde aquí hay bifurcaciones de las grutas subterráneas que llegan hasta el interior del castillo, de las cuales algunas pudieron servir para huir en caso de asalto. Podemos divisar la ladera del cerro de la fortaleza que en su dia se llamó Qalat Yabir, por su origen almohade. La construcción de este castillo está datada de hace unos 1000 años, aunque muy probablemente este enclave ya contaba con alguna fortificación 2 siglos antes.\n\n¿En qué siglo le dió su configuración actual tras la reconquista el rey Fernando III?",
                 "answer":  "XIII"                   
             },
             {
@@ -134,14 +150,14 @@
         "next_coordinates": [37.33185438165523, -5.850597155540383]    
     },
     {
-        "id": 5,
+        "id": 6,
         "title": "Portal 4: Molino de la tapada",
-        "text": "Pintoresco molino que reposa junto al popularmente conocido puente romano.",
+        "text": "Empiezo a ver algo, realmente es precioso; todo es tan distinto... El molino está en funcionamiento, se oye como cae el agua con fuerza y suenan piedras girando y rozando. En la puerta hay 2 burros atados y ahora sale un señor con un enorme saco que carga sobre uno de los animales. ¡Hola, señor! ¿Qué tal?. ¡Ay, Dios! El hombre se ha caído de culo y las bestias están rebuznando muy alteradas. ¡No se asuste señor, no pasa nada! ¿Por qué sale huyendo?. Una señora que lavaba ropa en el río se ha precipitado al agua e intenta chapotear angustiada hacia la otra orilla con la cara desencajada. Creo que no tendría que haberles gritado. ¡No pasa nada, seguid con vuestros asuntos! Yo ya me iba... Será mejor que deje de chillar y salga de aquí.",
         "questions":
         [
             {
                 "id": 0,
-                "question_text": "En su castillete podrás observar un símbolo que se repite en varias ocasiones, ¿cuántas puntas tiene dicho símbolo?",
+                "question_text": "Pintoresco molino que reposa junto al popularmente conocido puente romano. \n\nEn su castillete podrás observar un símbolo que se repite en varias ocasiones, ¿cuántas puntas tiene dicho símbolo?",
                 "answer":  "6"                   
             },
             {
@@ -161,14 +177,14 @@
         "next_coordinates": [37.332609125146995, -5.8447253723850165]    
     },
     {
-        "id": 6,
-        "title": "Portal 5: Molino del algarrobo",
-        "text": "Esta construcción es posiblemente la más compleja de la ribera molinera de Alcalá",
+        "id": 7,
+        "title": "Portal 5: Molino del Algarrobo",
+        "text": "Oh, ¡qué mareo! Vaya, parece que llueve. No, no lo parece, realmente me estoy mojando y no es cosa de broma, menudo temporal. El agua salta con fuerza la presa y el molino parece estar parado. Supongo que para no forzar el mecanismo con este torrencial.\n\nLa verdad es que el entorno se asemeja bastante a la actualidad, aunque se nota que está mas cuidado y moderno. Es raro decir moderno cuando uno viene del futuro, pero es que todo parece como recién construido. Hay un perro en el umbral que no para de ladrarme y espero que siga con la idea de no mojarse y se quede ahí. ¿Vosotros lo escucháis? ¿Hola? ¿Chicos? No os veo, esto es muy raro, pero tampoco os escucho. Espero que no hayáis seguido sin mí. No me haríais eso, ¿verdad?. El ruido del agua es ensordecedor y el perro se está desgañitando. Es complicado oír algo más que eso. Tranquilo chico, piensa que podrás contarle a tus cachorros que una vez le ladraste a un viajero del tiempo.\n\nY mi madre que me decía que no hiciera más de una cosa a la vez. Pués en estos momentos tengo la cabeza en un siglo pasado que ahora averiguaremos y el culo en el 2023. Bueno, poco más puedo añadir y realmente me estoy poniendo chorreando.",
         "questions":
         [
             {
                 "id": 0,
-                "question_text": "Su parte mas antigua es la torre que, ¿está fechada en qué siglo?",
+                "question_text": "Esta construcción es posiblemente la más compleja de la ribera molinera de Alcalá. Su parte mas antigua es la torre que, ¿está fechada en qué siglo?",
                 "answer":  "XIV"                   
             },
             {
@@ -188,14 +204,14 @@
         "next_coordinates": [37.3333020, -5.8432121]    
     },
     {
-        "id": 7,
+        "id": 8,
         "title": "Portal 6: Molino de la caja",
-        "text": "Sentados tranquilamente en este banco frente al tronco de eucalipto cortado podemos observar un remanso del río, pero está zona no siempre fue tan sosegada. Desde que cruzasteis el río, habréis observado ruinas y restos de construcciones hasta llegar aquí. Y es que en este emplazamiento existió una fábrica de harina muy importante levantada sobre los fuertes cimientos del desaparecido molino de la caja, el mas desconocido de todos. Los hermanos De La Portilla levantaron esta empresa e incorporaron una máquina de vapor a su harinera, algo totalmente novedoso en la época y que le dió a la factoría el nombre de \"La máquina de Alcalá\".",
+        "text": "Teníais razón. Esto es exhaustante. No sé si me acabo de inventar esa palabra, en fin... No podéis haceros una idea de lo que ha cambiado esto. Y eso que por las máquinas que veo, no estamos muy lejos en el tiempo. Todo este margen del río es una prospera industria a pleno rendimiento. El humo y los trabajadores así lo indican. Jamas podría haber imaginado esta mega fábrica aquí, en este remanso tan tranquilo. Ahora veo llegar un tren a lo lejos y aumenta el movimiento en la zona.\n\n¡Eh, chicos!. Creo que me han visto. Hay un señor perplejo con los ojos como platos y la boca abierta con un cigarro pegado en la comisura de los labios a punto de caerse. No sé qué tiempo llevara observándome, pero no se mueve. Bueno, voy a despedirme con un saludo con la mano y lo voy a dejar ahí todo traumatizado en su universo",
         "questions":
         [
             {
                 "id": 0,
-                "question_text": "¿De que siglo estamos hablando?",
+                "question_text": "Sentados tranquilamente en este banco frente al tronco de eucalipto cortado podemos observar un remanso del río, pero está zona no siempre fue tan sosegada. Desde que cruzasteis el río, habréis observado ruinas y restos de construcciones hasta llegar aquí. Y es que en este emplazamiento existió una fábrica de harina muy importante levantada sobre los fuertes cimientos del desaparecido molino de la caja, el más desconocido de todos. Los hermanos De La Portilla levantaron esta empresa e incorporaron una máquina de vapor a su harinera, algo totalmente novedoso en la época y que le dió a la factoría el nombre de \"La máquina de Alcalá\". ¿De qué siglo estamos hablando?",
                 "answer":  "XIX"                   
             },
             {
@@ -215,14 +231,14 @@
         "next_coordinates": [37.32930270960089, -5.843335243145915]    
     },
     {
-        "id": 8,
+        "id": 9,
         "title": "Portal 7: Quiosco de la música",
-        "text": "Pasando la recientemente remodelada \"Casa del Guarda\" y el peculiar \"Molino de Oromana\" encontramos el \"Quiosco de la musica\", una plataforma techada donde durante mucho tiempo se reunieron músicos de toda indole para tocar en un entorno plácido.",
+        "text": "Voy a intentar ser exacto en lo que veo. Desde aquí se pueden observar 3 molinos en funcionamiento y una casa de la que sale humo por su chimenea, algo se está cocinado en su interior. Dos de los molinos están junto al cauce, pero el que está en nuestra orilla sube unos metros del nivel del río. El agua sale de la ladera de la montaña y va canalizada hasta su interior. Puedo oír el ruido del agua como cae a distinta altura. ¡Ay, mira qué lindo gatito!\n\nEl río se ve cristalino, la vegetación es muy densa y los caminos parecen más...un momento... ¿Adónde vas, minino? No, ¡fuera! Vas a hacer que me caiga hacia atrás. Gato malo...\n\nNo veo nada. Decidme por favor que el gato no está aquí con nosotros en el futu... ¡No me chupes!. Eres un gato muy travieso. Tenemos que devolverlo a su tiempo. Ven aquí, vas a volver por donde viniste, gato del pasado. ¡Allá vas! Ahora tenemos que cerrar el portal antes de que vuelva a colarse y quién sabe las enfermedades que puede llevar o traer, tanto a otros animales, como a personas",
         "questions":
         [
             {
                 "id": 0,
-                "question_text": "¿Cuantas columnas tiene dicho emplazamiento?",
+                "question_text": "Pasando la recientemente remodelada \"Casa del Guarda\" y el peculiar \"Molino de Oromana\" encontramos el \"Quiosco de la musica\", una plataforma techada donde durante mucho tiempo se reunieron músicos de toda indole para tocar en un entorno plácido. ¿Cuantas columnas tiene dicho emplazamiento?",
                 "answer":  "8"                   
             },
             {
@@ -232,7 +248,7 @@
             } ,
             {
                 "id": 2,
-                "question_text": "Para recibir las coordenadas de la entrada de la gruta debéis utilizar los datos recopilados. En cada uno de los puntos que habéis visitado habéis obtenido un número de 1 o 2 dígitos que tenéis que reordenar para que los portales se alineen y la linea temporal se restablezca. Responded con el número completo, sin guiones ni separación alguna. En total son 11 dígitos.",
+                "question_text": "¡Genial, habéis cerrado todos los portales! Para recibir las coordenadas de la entrada de la gruta debéis utilizar los datos recopilados. En cada uno de los puntos que habéis visitado habéis obtenido un número de 1 o 2 dígitos que tenéis que <b>reordenar</b> para que los portales se alineen y la línea temporal se restablezca. Responded con el número completo, sin guiones ni separación alguna. En total son 11 dígitos.",
                 "answer": "83261611385"
             }
         ],
@@ -247,27 +263,26 @@
         "next_coordinates": [37.32657345350184, -5.842452123336985]      
     },
     {
-        "id": 9,
+        "id": 10,
         "title": "Bienvenidos",
-        "text": "",
+        "text": "Es hora de buscar el geocaché. Pulsa el botón \"Geocache encontrado\" una vez que lo encuentres para terminar la aventura.",
         "questions":
         [],
         "buttons": [
             {
                 "id": 1,
                 "label": "Geocache encontrado",
-                "data": 10
+                "data": 11
             },
             {
                 "id": 2,
                 "label": "Reiniciar",
                 "data": 0
             }
-        ],
-        "audio": "desenlace.m4a"
+        ]
     },
     {
-        "id": 10,
+        "id": 11,
         "title": "GRACIAS",
         "text": "El mundo te agradece tu labor evitando la catástrofe. Esperamos que lo hayas pasado bien.",
         "questions":[],
@@ -278,6 +293,7 @@
                 "data": 0
             }
         ],
-        "image": "gracias.jpg"
+        "image": "gracias.jpg",
+        "audio": "desenlace.m4a"
     }        
 ]  
