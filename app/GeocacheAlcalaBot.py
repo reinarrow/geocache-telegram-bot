@@ -14,8 +14,8 @@ BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 
 CONFIG_PATH = 'config/history_metadata.json'
 
-# Radius of distance to accept to the next objective in kilometers during navigation (50 meters)
-LOCATION_PRECISION = 0.05
+# Radius of distance to accept to the next objective in kilometers during navigation (30 meters)
+LOCATION_PRECISION = 0.03
 
 HELP_QUERY_URL = 'https://www.google.com/maps/search/?api=1&query={lat},{lon}'
 
@@ -163,6 +163,16 @@ def button_tap(update: Update, context: CallbackContext) -> None:
             cur.close()
         else: 
             context.bot.send_message(update.effective_chat.id, "Lo siento, no hay ayuda disponible en este momento.")   
+    elif next_step == -2:    
+        # Button to move from the time travel narration to questions       
+        questions = current_step_data.get('questions')
+        for question in questions:
+            if question['id'] == 0:
+                send_question(update, context, question)
+                break
+
+        # If the code gets here, there are not questions in this step.
+        logging.warning('No question was found for current step.')  
     else:
         # call the update function to send the next message
         send_next_step(next_step, update, context)
@@ -218,8 +228,22 @@ def send_next_step(step_id, update: Update, context: CallbackContext):
     # Update text        
     text = "<b>"+current_step_data.get('title')+"</b>"+"\n\n"+current_step_data.get('text')
 
+    # If there are questions, add a button to move to the questions after the portal narration
+    buttons = current_step_data.get('buttons')
+    questions = current_step_data.get('questions')
+    if len(questions) > 0:
+        logging.info("Adding button for transition to questions")
+        question_transition_button = {
+                "id": len(buttons)+1,
+                "label": "Regresar al presente",
+                "data": -2
+            }
+
+        # Add an element to the list
+        buttons.append(question_transition_button)
+
     # Update buttons (if any)
-    markup = build_buttons_markup(current_step_data.get('buttons'))
+    markup = build_buttons_markup(buttons)
 
     # Send history markup (text + buttons)
     context.bot.send_message(
@@ -232,19 +256,10 @@ def send_next_step(step_id, update: Update, context: CallbackContext):
     # Send audio if any
     if audio_config := current_step_data.get('audio'):
         send_media(context, update.effective_chat.id, 'audio', 'audio/' + audio_config)     
-
-    # Get first question and send it
-    current_chat_data = get_current_chat_data(update.effective_chat.id)
-    current_step_data = get_config_data(current_chat_data[0])
-
-    questions = current_step_data.get('questions')
-    for question in questions:
-        if question['id'] == 0:
-            send_question(update, context, question)
-            break
-
-    # If the code gets here, there are not questions in this step. Just advance to the next one
-    logging.warning('No question was found for current step.')        
+    
+    # In step 1, navigation should start right away, without having to answer questions
+    if step_id == 1:
+        start_navigation(update, context)   
 
 def send_media(context, chat_id, type, path):
     """
@@ -327,37 +342,45 @@ def answer(update: Update, context: CallbackContext) -> None:
         if next_question:                                        
             send_question(update, context, next_question)
         else:
-            # Send message about portal closed and navigation start if there is coordinates
-            # Send image if any
-            if image_config:= current_step_data.get('image'):
-                send_media(context, update.effective_chat.id, 'photo', 'image/' + image_config)
-
-            # If there is a navigation phase (next_coordinates is not null), include the button to send the location
-            if current_step_data.get('next_coordinates'):
-                keyboard = [[KeyboardButton(text="Radar", request_location=True)]]
-                reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
-                context.bot.send_message(
-                    update.effective_chat.id,
-                    f'Gracias a vuestras respuestas, el portal se ha cerrado. Avancemos hacia el siguiente objetivo. \n\nTenéis a vuestra disposición un dispositivo de localización. El radar portatemporal detecta las ondas que emiten los portales mediante una lectura de ciclos por segundo, o herzios. El dispositivo convierte estos datos en distancia longitudinal. Cuando activéis el botón "Radar" se reflejará en vuestra pantalla a modo de dirección Norte, Sur, Este u Oeste y distancia en metros. La ubicación de los portales la tenemos aproximadas y una vez allí activaréis el radar portatemporal para encontrar el punto exacto. Como ya os he avisado, estos portales son inestables e irradian ondas perjudiciales para la salud dependiendo del tamaño que tenga en el momento que os acerquéis. No sabemos con exactitud el alcance que pueden llegar a tener, pero sabemos que por exponerse a un solo portal no revestirá gravedad, pero si una continua exposición. Por ello, si trabajáis en equipo, os rogamos encarecidamente hacerlo por turnos para no acumular mucha radiactividad.',
-                    reply_markup=reply_markup)  
-
-                # Send help button
-                button = [        
-                    {
-                        "id": 1,
-                        "label": "Ayuda",
-                        "data": -1
-                    }
-                ]   
-                markup = build_buttons_markup(button)
-
-                context.bot.send_message(
-                    update.effective_chat.id,
-                    'Aquí tenéis el botón de ayuda en caso de que os perdáis. ¡Recordad no abusar de él!',
-                    reply_markup=markup)          
-
+            start_navigation(update, context)       
         conn.commit()
         cur.close()
+
+def start_navigation(update: Update, context: CallbackContext):
+    # Send message about portal closed and navigation start if there is coordinates
+    # Send image if any
+
+    chat_id = update.effective_chat.id
+    current_chat_data = get_current_chat_data(chat_id)
+    if current_chat_data:
+        current_step_data = get_config_data(current_chat_data[0])
+
+    if image_config:= current_step_data.get('image'):
+        send_media(context, update.effective_chat.id, 'photo', 'image/' + image_config)
+
+    # If there is a navigation phase (next_coordinates is not null), include the button to send the location
+    if current_step_data.get('next_coordinates'):
+        keyboard = [[KeyboardButton(text="Radar", request_location=True)]]
+        reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
+        context.bot.send_message(
+            update.effective_chat.id,
+            f'Es hora de navegar al siguiente objetivo. Si no veis el radar, pulsad el botón con cuatro cuadrados junto al campo de texto del chat.',
+            reply_markup=reply_markup)  
+
+        # Send help button
+        button = [        
+            {
+                "id": 1,
+                "label": "Ayuda",
+                "data": -1
+            }
+        ]   
+        markup = build_buttons_markup(button)
+
+        context.bot.send_message(
+            update.effective_chat.id,
+            'Aquí tenéis el botón de ayuda en caso de que os perdáis. ¡Recordad no abusar de él!',
+            reply_markup=markup)   
 
 def send_question(update: Update, context: CallbackContext, question):
     # Send the question to the chat
@@ -403,15 +426,18 @@ def location(update: Update, context: CallbackContext):
         update.message.reply_text(f'El objetivo se encuentra a {round(distance*1000)} metros en dirección {bearing_name} ({bearing}° respecto del Norte).')
 
 def on_location_found(update: Update, context: CallbackContext):
-    # Remove the navigation button
-    text = f'Estáis demasiado cerca del portal, es hora de que alguno de ustedes tome el mando y demuestre de que pasta está hecho. Coge el radar y continúa solo hasta el portal mientras vas narrando lo que ocurre a tus compañeros.'
-    update.message.reply_text(text, reply_markup=None)
-    
-    # Find data from current chat to get the target coordinates
+        # Find data from current chat to get the target coordinates
     chat_id = update.effective_chat.id
     current_chat_data = get_current_chat_data(chat_id)
     current_step = current_chat_data[0]
     current_step_data = get_config_data(current_step)
+
+    # Remove the navigation button
+    text = f'Estáis demasiado cerca del portal, es hora de que alguno de ustedes tome el mando y demuestre de que pasta está hecho. Coge el radar y continúa solo hasta el portal mientras vas narrando lo que ocurre a tus compañeros.'
+    if current_step == 9:
+        text = f'Habéis encontrado la entrada de la cueva. Si tenéis el valor necesario, es hora de entrar y descubrir los planes secretos de Anthony.'        
+    update.message.reply_text(text, reply_markup=None)
+    
 
     if not current_step_data:
         return
