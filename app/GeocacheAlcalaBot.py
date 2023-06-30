@@ -19,8 +19,18 @@ LOCATION_PRECISION = 0.03
 
 HELP_QUERY_URL = 'https://www.google.com/maps/search/?api=1&query={lat},{lon}'
 
+# Database connection handler
 con = None
-cur = None
+
+# Object containing the message update with the real-time location of the user
+locations = {}
+
+# Flag for name request in progress and temporary name store for verification
+requesting_name = False
+temp_name = None
+
+# Flag for location sharing request in progress
+requesting_location = False
 
 def init_db():
     db_host = os.environ.get('POSTGRES_HOST')
@@ -45,7 +55,7 @@ def init_db():
         table_exists = cur.fetchone()[0]
 
         if not table_exists:
-            cur.execute("CREATE TABLE chat_data (chat_id BIGINT PRIMARY KEY, current_step INT, current_question INT, helps_used INT, start_time timestamp, total_time interval)")
+            cur.execute("CREATE TABLE chat_data (chat_id BIGINT PRIMARY KEY, username  current_step INT, current_question INT, helps_used INT, start_time timestamp, total_time interval, username VARCHAR")
             conn.commit()
     finally:
         cur.close()
@@ -94,14 +104,99 @@ def start(update: Update, context: CallbackContext):
         # If the user already existed, resend the initial instructions. Might be useful if they did not start the adventure but the chat got lost. Otherwise, they will not know how to start
         if(current_chat_data[0] == 0):
             send_next_step(0, update, context)
+        return   
+
+    request_name(update, context)
+
+def request_name(update: Update, context: CallbackContext):
+    """
+    This function requests the user to specify their name
+    """
+    # Set flag to true to identify the next user message as a 
+    global requesting_name
+    requesting_name= True
+
+    name_request = "Antes de empezar, ¿con qué nombre debo dirigirme a vosotros? Este nombre se utilizará al final para la tabla de clasificación por tiempos."
+    context.bot.send_message(update.effective_chat.id, name_request)
+
+def verify_name(name: str, update: Update, context: CallbackContext):
+    """
+    Verify if the introduced name is OK
+    """
+
+    global temp_name
+    temp_name = name
+
+    # Check if the name exists
+    cur =  conn.cursor()
+    cur.execute("SELECT username FROM chat_data WHERE username=%s;",(name,))
+    same_name = cur.fetchone()
+    
+    if same_name:
+        context.bot.send_message(update.effective_chat.id, "El nombre ya existe. Por favor, elige otro.")
         return
-    cur.execute("INSERT INTO chat_data (chat_id, current_step, current_question, helps_used) VALUES (%s,%s,%s,%s);", (chat_id, 0, 0, 0))
+
+    buttons = []
+    yes_button = {
+        "id": 0,
+        "label": "Sí",
+        "data": 1
+    }
+    no_button = {
+        "id": 1,
+        "label": "No",
+        "data": 0
+    }
+
+    # Add buttons to the list
+    buttons.append(yes_button)
+    buttons.append(no_button)
+
+    # Build markup with buttons
+    markup = build_buttons_markup(buttons)
+
+    # Send history markup (text + buttons)
+    context.bot.send_message(
+        update.effective_chat.id,
+        f'Tu nombre es {name}. ¿Es correcto?',
+        parse_mode=ParseMode.HTML,
+        reply_markup=markup
+    ) 
+
+def register_user(update: Update, context: CallbackContext):
+    """
+    This function registers a new user after the name is specified, with the chat_id and name identification. 
+    After that, it triggers the location request
+    """
+    global requesting_name
+    requesting_name = False
+
+    global temp_name
+    cur =  conn.cursor()
+    chat_id = update.effective_chat.id
+    cur.execute("INSERT INTO chat_data (chat_id, current_step, current_question, helps_used, username) VALUES (%s,%s,%s,%s,%s);", 
+                (chat_id, 0, 0, 0, temp_name))
     cur.close()
-    send_next_step(0, update, context)
+
+    request_location(update, context)
+    # send_next_step(0, update, context)
+
+def request_location(update: Update, context: CallbackContext):
+    """
+    This function requests the user to share their location with the bot and enable real-time
+    """
+    global requesting_location
+    requesting_location = True
+
+    current_chat_data = get_current_chat_data(update.effective_chat.id)
+    username = current_chat_data[3]
+
+    text =f"De acuerdo, {username}. Para poder ayudaros durante la búsqueda de las localizaciones, necesito acceso a vuestra localización en tiempo real. Para ello, pulsa en compartir, busca la opción de localización y marca la opción de compartir la ubicación en tiempo real (no solo la posición actual). Se te pedirá elegir el tiempo que quieres compartir la ubicación. Te recomiendo elegir 8 horas para no tener problemas. Ten en cuenta que puedes dejar de compartirla en cualquier momento si lo necesitas."""
+    context.bot.send_message(update.effective_chat.id, text)    
 
 def get_current_chat_data(chat_id):
     cur = conn.cursor()
-    cur.execute("SELECT current_step, current_question, helps_used FROM chat_data WHERE chat_id=%s;",(chat_id,))
+    cur.execute("SELECT current_step, current_question, helps_used, username FROM chat_data WHERE chat_id=%s;",(chat_id,))
     current_chat_data = cur.fetchone()
     cur.close()
     return current_chat_data
@@ -122,25 +217,37 @@ def button_tap(update: Update, context: CallbackContext) -> None:
     """
     This handler processes the inline buttons on the menu
     """
-    # Find data from current chat to update the step
+
     chat_id = update.effective_chat.id
+    # Close the query to end the client-side loading animation
+    if callback_query := update.callback_query:
+        callback_query.answer()
+
+        # Remove button
+        context.bot.edit_message_reply_markup(chat_id=chat_id, message_id=callback_query.message.message_id, reply_markup=None)
+
+    # Find data from current chat to update the step    
     if update.callback_query and update.callback_query.data:
         next_step = int(update.callback_query.data) 
     else:
         logging.error('Error while retrieving data from the button.')
+        return
+                
+    # Check if the user is creating the name
+    global requesting_name
+    if requesting_name:
+        if next_step == 0:
+            # User clicked NO
+            context.bot.send_message(chat_id, "De acuerdo, introduce el nuevo nombre")
+        else:
+            # User clicked YES
+            register_user(update, context)
         return
 
     current_chat_data = get_current_chat_data(chat_id)
     current_step = current_chat_data[0]
     current_step_data = get_config_data(current_step)            
 
-    # Close the query to end the client-side loading animation
-    if callback_query := update.callback_query:
-        callback_query.answer()
-
-        # Remove button
-        context.bot.edit_message_reply_markup(chat_id=callback_query.message.chat_id, message_id=callback_query.message.message_id, reply_markup=None)
-        
     # Id of the Help button is -1
     if next_step == -1:
         # Get link to coordinates for current step
@@ -286,16 +393,16 @@ def send_media(context, chat_id, type, path):
     """
     try:
         with open(path, "rb") as file:
-                if(type == 'photo'):
-                    context.bot.send_photo(
-                        chat_id = chat_id, 
-                        photo = file
-                    )
-                elif(type == 'audio'):
-                    context.bot.send_audio(
-                        chat_id = chat_id, 
-                        audio = file
-                    )
+            if(type == 'photo'):
+                context.bot.send_photo(
+                    chat_id = chat_id,
+                    photo = file
+                )
+            elif(type == 'audio'):
+                context.bot.send_audio(
+                    chat_id = chat_id,
+                    audio = file
+                )
     except FileNotFoundError:
         logging.error(f"File not found: {file}")
     except Exception as e:
@@ -303,10 +410,22 @@ def send_media(context, chat_id, type, path):
 
 def answer(update: Update, context: CallbackContext) -> None:
     """Process answer."""
-    ## TODO: Remove this for debugging
+
+    # Check if the answer belongs to the name registration
+    global requesting_name
+    if requesting_name:
+        verify_name(update.message.text, update, context)
+        return
+
     if update.message and update.message.text.lower() == "skip":
         on_location_found(update, context)
         return
+    
+    # This is triggered with the user has already shared the location and clicks on the radar button afterwards
+    if update.message and update.message.text.lower() == "radar":
+        execute_radar(update, context)
+        return
+    
     correct_answer = False
 
     chat_id = update.effective_chat.id
@@ -367,8 +486,6 @@ def answer(update: Update, context: CallbackContext) -> None:
 
 def start_navigation(update: Update, context: CallbackContext):
     # Send message about portal closed and navigation start if there is coordinates
-    # Send image if any
-
     chat_id = update.effective_chat.id
     current_chat_data = get_current_chat_data(chat_id)
     if current_chat_data:
@@ -379,8 +496,9 @@ def start_navigation(update: Update, context: CallbackContext):
 
     # If there is a navigation phase (next_coordinates is not null), include the button to send the location
     if current_step_data.get('next_coordinates'):
-        keyboard = [[KeyboardButton(text="Radar", request_location=True)]]
-        reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
+        # Make radar button visible for navigation phase
+        keyboard = [[KeyboardButton(text="Radar 🧭", request_location=False)]]
+        reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True, resize_keyboard=True)
         context.bot.send_message(
             update.effective_chat.id,
             f'Es hora de navegar al siguiente objetivo. Si no veis el radar, pulsad el botón con cuatro cuadrados junto al campo de texto del chat.',
@@ -410,23 +528,56 @@ def send_question(update: Update, context: CallbackContext, question):
         reply_markup=None
     )  
 
-def request_location(update: Update, context: CallbackContext) -> None:   
-    keyboard = [[KeyboardButton(text="Send Your Location", request_location=True)]]
-    reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
-    update.message.reply_text(f'Text',
-                              reply_markup=reply_markup)
-
 def location(update: Update, context: CallbackContext):
-    current_pos = update.message.location
-    logging.info(current_pos)
+    global locations
+    chat_id = update.effective_chat.id
+
+    # If location request is in progress
+    global requesting_location
+    if requesting_location:
+        if update.message.location and update.message.location.live_period > 0:
+            # Live location correctly shared. Persist current location and start the adventure
+            locations.update({chat_id: update.message.location})
+            context.bot.send_message(chat_id, "Genial, has completado la configuración. ¡Comencemos!")
+            send_next_step(0, update, context)
+
+            requesting_location = False
+        else:
+            context.bot.send_message(chat_id, "Tengo problemas accediendo a tu localización en tiempo real. Por favor inténtalo de nuevo.")
+        return
     
-    user_coords = (current_pos.latitude, current_pos.longitude)
+
+    # Automatic (or manual) location send without the initial request. Process it.
+    current_pos = None
+    if message := update.edited_message:
+        current_pos = message.location
+    else:
+        current_pos = update.message.location
+    
+    logging.info(f'New location: {current_pos}')
+    locations.update({chat_id: current_pos})        
+
+def execute_radar(update: Update, context: CallbackContext):
+    """
+    Execute the radar, by using the latest available location from the user (shared in real time with the bot).
+    Check for proximity to the next target.
+    """
+    global locations
+    chat_id = update.effective_chat.id
+    
+    last_location = locations.get(chat_id)
+    if not last_location:
+        logging.error(f'No location stored for user {chat_id}')
+        return
+
+    user_coords = (last_location.latitude, last_location.longitude)
     
     # Find data from current chat to get the target coordinates
     current_chat_data = get_current_chat_data(update.effective_chat.id)
     current_step_data = get_config_data(current_chat_data[0])
 
     if not current_step_data:
+        logging.error(f'No data for current step for user {chat_id}')
         return
         
     next_coordinates = current_step_data.get('next_coordinates')
