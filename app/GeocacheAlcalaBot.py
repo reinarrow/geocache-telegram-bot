@@ -449,19 +449,16 @@ def on_location_found(update: Update, context: CallbackContext):
     chat_id = update.effective_chat.id
     current_chat_data = get_current_chat_data(chat_id)
     current_step = current_chat_data[0]
-    current_step_data = get_config_data(current_step)
-
-    # Remove the navigation button
-    text = f'Estáis demasiado cerca del portal, es hora de que alguno de ustedes tome el mando y demuestre de que pasta está hecho. Coge el radar y continúa solo hasta el portal mientras vas narrando lo que ocurre a tus compañeros.'
-    if current_step == 9:
-        text = f'Habéis encontrado la entrada de la cueva. Si tenéis el valor necesario, es hora de acercaros y descubrir los planes secretos de Anthony.'        
-    update.message.reply_text(text, reply_markup=None)
+    current_step_data = get_config_data(current_step)    
     
+    next_step = current_step + 1
+
+    if next_step == get_last_step() - 1:
+        send_next_step(next_step, update, context)
+        return
     if not current_step_data:
         return
     
-    next_step = current_step+1
-
     # Send a button for the user to confirm that they want to move to next point
     button = [        
         {
@@ -469,21 +466,18 @@ def on_location_found(update: Update, context: CallbackContext):
             "label": "Estoy listo",
             "data": next_step
         }
-    ]
+    ]    
 
+    text = f'Estáis demasiado cerca del portal, es hora de que alguno de ustedes tome el mando y demuestre de que pasta está hecho. Coge el radar y continúa solo hasta el portal mientras vas narrando lo que ocurre a tus compañeros.'
     markup = build_buttons_markup(button)
-
+    
     # Send history markup (text + buttons)
     context.bot.send_message(
         chat_id,
-        'Pulsa el botón cuando estés listo',
+        text,
         parse_mode=ParseMode.HTML,
         reply_markup=markup
     )  
-
-    # Move to next step if any
-    cur.execute("UPDATE chat_data SET current_step=%s, current_question=%s WHERE chat_id=%s",(next_step, 0, chat_id))
-    send_next_step(next_step, update, context)
 
 def main() -> None:
     updater = Updater(BOT_TOKEN)
