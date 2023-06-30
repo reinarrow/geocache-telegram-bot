@@ -2,9 +2,9 @@ import logging
 import json
 import psycopg2
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
-from telegram import Update, ForceReply,ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
+from telegram import Update, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, CallbackQueryHandler
 from GeoCalculator import GeoCalculator
 
@@ -191,7 +191,7 @@ def request_location(update: Update, context: CallbackContext):
     current_chat_data = get_current_chat_data(update.effective_chat.id)
     username = current_chat_data[3]
 
-    text =f"De acuerdo, {username}. Para poder ayudaros durante la búsqueda de las localizaciones, necesito acceso a vuestra localización en tiempo real. Para ello, pulsa en compartir, busca la opción de localización y marca la opción de compartir la ubicación en tiempo real (no solo la posición actual). Se te pedirá elegir el tiempo que quieres compartir la ubicación. Te recomiendo elegir 8 horas para no tener problemas. Ten en cuenta que puedes dejar de compartirla en cualquier momento si lo necesitas."""
+    text = f"De acuerdo, {username}. Para poder ayudaros durante la búsqueda de las localizaciones, necesito acceso a vuestra ubicación en tiempo real. Para ello, pulsa en compartir, busca la opción de ubicación y marca la opción de compartir la ubicación en tiempo real (no solo la posición actual). Se te pedirá elegir el tiempo que quieres compartir la ubicación. Te recomiendo elegir 8 horas para no tener problemas. Ten en cuenta que puedes dejar de compartirla en cualquier momento si lo necesitas."
     context.bot.send_message(update.effective_chat.id, text)    
 
 def get_current_chat_data(chat_id):
@@ -422,7 +422,7 @@ def answer(update: Update, context: CallbackContext) -> None:
         return
     
     # This is triggered with the user has already shared the location and clicks on the radar button afterwards
-    if update.message and update.message.text.lower() == "radar":
+    if update.message and "radar portatemporal" in update.message.text.lower():
         execute_radar(update, context)
         return
     
@@ -497,7 +497,7 @@ def start_navigation(update: Update, context: CallbackContext):
     # If there is a navigation phase (next_coordinates is not null), include the button to send the location
     if current_step_data.get('next_coordinates'):
         # Make radar button visible for navigation phase
-        keyboard = [[KeyboardButton(text="Radar 🧭", request_location=False)]]
+        keyboard = [[KeyboardButton(text="Radar portatemporal 🧭", request_location=False)]]
         reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True, resize_keyboard=True)
         context.bot.send_message(
             update.effective_chat.id,
@@ -529,33 +529,32 @@ def send_question(update: Update, context: CallbackContext, question):
     )  
 
 def location(update: Update, context: CallbackContext):
-    global locations
     chat_id = update.effective_chat.id
 
     # If location request is in progress
     global requesting_location
     if requesting_location:
-        if update.message.location and update.message.location.live_period > 0:
+        logging.info(f'Requesting location is enabled')
+        if update.message and update.message.location and update.message.location.live_period:
+            requesting_location = False
+
             # Live location correctly shared. Persist current location and start the adventure
-            locations.update({chat_id: update.message.location})
             context.bot.send_message(chat_id, "Genial, has completado la configuración. ¡Comencemos!")
             send_next_step(0, update, context)
 
-            requesting_location = False
-        else:
+        elif not update.edited_message:
+            # Only react to manually sent location
             context.bot.send_message(chat_id, "Tengo problemas accediendo a tu localización en tiempo real. Por favor inténtalo de nuevo.")
         return
     
-
-    # Automatic (or manual) location send without the initial request. Process it.
-    current_pos = None
+    # Automatic location send without the initial request. Process it and update stored value.
+    logging.info(f'edited message: {update.edited_message}')
     if message := update.edited_message:
-        current_pos = message.location
+        global locations
+        locations[chat_id] = message 
+        logging.info(f'Stored new location: {locations}')
     else:
-        current_pos = update.message.location
-    
-    logging.info(f'New location: {current_pos}')
-    locations.update({chat_id: current_pos})        
+        logging.warning('Received a manual location outside the request period. Ignoring...')
 
 def execute_radar(update: Update, context: CallbackContext):
     """
@@ -564,13 +563,16 @@ def execute_radar(update: Update, context: CallbackContext):
     """
     global locations
     chat_id = update.effective_chat.id
+    logging.info(f'Chat ID: {chat_id}')
     
     last_location = locations.get(chat_id)
-    if not last_location:
-        logging.error(f'No location stored for user {chat_id}')
+    # Check if there is location stored and if the time since the last location was received to detect stopped auto location
+    if not last_location or (datetime.now(timezone.utc) - last_location.edit_date).total_seconds() > 40:
+        logging.error(f'No location stored for user {chat_id} or stopped real time location')
+        context.bot.send_message(chat_id, "Hay problemas con tu localización en tiempo real. Por favor compártela de nuevo")
         return
 
-    user_coords = (last_location.latitude, last_location.longitude)
+    user_coords = (last_location.location.latitude, last_location.location.longitude)
     
     # Find data from current chat to get the target coordinates
     current_chat_data = get_current_chat_data(update.effective_chat.id)
