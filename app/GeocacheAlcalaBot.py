@@ -179,21 +179,35 @@ def button_tap(update: Update, context: CallbackContext) -> None:
 
 def send_next_step(step_id, update: Update, context: CallbackContext):    
     chat_id = update.effective_chat.id
-    current_chat_data = get_current_chat_data(chat_id)
     current_step_data = get_config_data(step_id)
 
     # Move to target step and reset current_question to 0        
     cur = conn.cursor()
     cur.execute("UPDATE chat_data SET current_step=%s, current_question=%s WHERE chat_id=%s",(step_id, 0, chat_id))
 
+    buttons = []
     if step_id == 0:
         # Reset helps, start_time and total_time
-        cur.execute("UPDATE chat_data SET helps_used=%s, start_time=%s, total_time=%s WHERE chat_id=%s",(0, None, None, chat_id))     
+        cur.execute("UPDATE chat_data SET helps_used=%s, start_time=%s, total_time=%s WHERE chat_id=%s",(0, None, None, chat_id))  
+
+        start_button = {
+            "id": 1,
+            "label": "¡Comenzar la aventura!",
+            "data": 1
+        }   
+        buttons.append(start_button)
 
     elif step_id == 1:
         # Player just started. Store init time
         now = datetime.now()
         cur.execute("UPDATE chat_data SET start_time=%s WHERE chat_id=%s",(now, chat_id))
+
+        reset_button = {
+            "id": 1,
+            "label": "Reiniciar",
+            "data": 0
+        }
+        buttons.append(reset_button)
 
     elif step_id == get_last_step():
         end_time = datetime.now()
@@ -229,7 +243,6 @@ def send_next_step(step_id, update: Update, context: CallbackContext):
     text = "<b>"+current_step_data.get('title')+"</b>"+"\n\n"+current_step_data.get('text')
 
     # If there are questions, add a button to move to the questions after the portal narration
-    buttons = current_step_data.get('buttons')
     questions = current_step_data.get('questions')
     if len(questions) > 0:
         logging.info("Adding button for transition to questions")

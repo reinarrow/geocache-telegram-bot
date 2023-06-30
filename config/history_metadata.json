@@ -3,29 +3,13 @@
         "id": 0,
         "title": "Hola, soy GeocacheBot",
         "text": "Encantado de conoceros. Mi propósito es guiaros a lo largo de esta aventura intertemporal hasta entontrar el Geocaché final. Pulsad el siguiente botón para comenzar la historia. \n\nUna vez que lo pulséis, el tiempo comenzará a contar, así que asegúraos de estar listo para emprender el viaje antes de hacerlo.\n\nEn cada etapa, recibiréis una imagen con una localización aproximada de ciertos portales temporales en el mapa. Para avanzar en la historia y recibir nueva información, deberéis acudir a dicha localización. Tenéis a vuestra disposición un dispositivo de localización. El radar portatemporal detecta las ondas que emiten los portales mediante una lectura de ciclos por segundo, o herzios. El dispositivo convierte estos datos en distancia longitudinal. Cuando activéis el botón \"Radar\" se reflejará en vuestra pantalla a modo de dirección Norte, Sur, Este u Oeste y distancia en metros. La ubicación de los portales las tenemos aproximadas y una vez allí activaréis el radar portatemporal para encontrar el punto exacto. Como ya os he avisado, estos portales son inestables e irradian ondas perjudiciales para la salud dependiendo del tamaño que tenga en el momento que os acerquéis. No sabemos con exactitud el alcance que pueden llegar a tener, pero sabemos que por exponerse a un solo portal no revestirá gravedad, pero sí una continua exposición. Por ello, si trabajáis en equipo, os rogamos encarecidamente hacerlo por turnos para no acumular mucha radiactividad.\n\nSi os atascáis durante la navegación, pulsad el botón de ayuda para obtener las coordenadas exactas. Pero cuidado, esto hará que el tiempo total aumente 5 minutos con cada uso, con el peligro de que lleguéis a un punto de no retorno en vuestro viaje en el tiempo. ¡No abuséis del botón!",
-        "questions": [],
-        "buttons":
-        [
-            {
-                "id": 1,
-                "label": "¡Comenzar la aventura!",
-                "data": 1
-            }
-        ]     
+        "questions": []     
     },
     {
         "id": 1,
         "title": "El Secreto del Relojero",
-        "text": "",
+        "text": "Si en algún momento tenéis que reiniciar la historia, volved a este paso y pulsad el botón \"Reiniciar\". Cuidado: Perderéis todo el progreso y el tiempo volverá a contar desde el principio.",
         "questions": [],
-        "buttons":
-        [
-            {
-                "id": 1,
-                "label": "Reiniciar",
-                "data": 0
-            }
-        ],
         "audio": "intro.m4a",
         "image": "0-teatro.jpg",    
         "next_coordinates": [37.33530842606043, -5.847702419076186]
@@ -44,14 +28,6 @@
                 "id": 1,
                 "question_text": "Siglos después y tras dejar de funcionar hace unos 100 años, se levantó sobre sus restos el salon Gutiérrez de Alba. ¿Cuántas ventanas cubiertas completamente con rejas tiene actualmente la fachada principal del teatro?",
                 "answer":  "2"
-            }
-        ],
-        "buttons":
-        [
-            {
-                "id": 1,
-                "label": "Reiniciar",
-                "data": 0
             }
         ],
         "image": "1-duque.png",    
@@ -73,13 +49,6 @@
                 "id": 1,
                 "question_text": "¿De qué siglo es la casa consistorial que se encuentra en esta plaza?",
                 "answer":  "XVII"                   
-            }
-        ],
-        "buttons": [
-            {
-                "id": 1,
-                "label": "Reiniciar",
-                "data": 0
             }
         ],
         "image": "2-puente.png",
@@ -107,13 +76,6 @@
                 "answer":  "5"                   
             }            
         ],
-        "buttons": [
-            {
-                "id": 1,
-                "label": "Reiniciar",
-                "data": 0
-            }
-        ],
         "image": "3-retama.png",
         "next_coordinates": [37.33218648444549, -5.852727763629848]   
     },
@@ -139,13 +101,6 @@
                 "answer":  "Camino de la Fuensanta" 
             }  
         ],
-        "buttons": [
-            {
-                "id": 1,
-                "label": "Reiniciar",
-                "data": 0
-            }
-        ],
         "image": "4-molino-tapada.png",
         "next_coordinates": [37.33185438165523, -5.850597155540383]    
     },
@@ -165,13 +120,6 @@
                 "question_text": "Estamos en la ladera del monte Calvario, donde está la Ermita de San Roque. Esta iglesia guarda una figura de Ntra. Sra. De Belén. ¿En qué siglo fue tallada?",
                 "answer":  "XVI" 
             } 
-        ],
-        "buttons": [
-            {
-                "id": 1,
-                "label": "Reiniciar",
-                "data": 0
-            }
         ],
         "image": "5-molino-algarrobo.png",
         "next_coordinates": [37.332609125146995, -5.8447253723850165]    
@@ -193,13 +141,6 @@
                 "answer":  "3" 
             } 
         ],
-        "buttons": [
-            {
-                "id": 1,
-                "label": "Reiniciar",
-                "data": 0
-            }
-        ],
         "image": "6-molino-caja.png",
         "next_coordinates": [37.3333020, -5.8432121]    
     },
@@ -219,13 +160,6 @@
                 "question_text": "¿Cuántos tablones hay en el último puente que habéis cruzado y que está junto al banco?",
                 "answer":  "38" 
             } 
-        ],
-        "buttons": [
-            {
-                "id": 1,
-                "label": "Reiniciar",
-                "data": 0
-            }
         ],
         "image": "7-quiosco-musica.png",
         "next_coordinates": [37.32930270960089, -5.843335243145915]    
@@ -252,13 +186,6 @@
                 "answer": "81132616385"
             }
         ],
-        "buttons": [
-            {
-                "id": 1,
-                "label": "Reiniciar",
-                "data": 0
-            }
-        ],
         "image": "8-cueva.png",
         "next_coordinates": [37.32657345350184, -5.842452123336985]      
     },
@@ -266,33 +193,13 @@
         "id": 10,
         "title": "Bienvenidos",
         "text": "Es hora de buscar el geocaché. Pulsa el botón \"Geocache encontrado\" una vez que lo encuentres para terminar la aventura.",
-        "questions":
-        [],
-        "buttons": [
-            {
-                "id": 1,
-                "label": "Geocache encontrado",
-                "data": 11
-            },
-            {
-                "id": 2,
-                "label": "Reiniciar",
-                "data": 0
-            }
-        ]
+        "questions":[]
     },
     {
         "id": 11,
         "title": "GRACIAS",
         "text": "El mundo te agradece tu labor evitando la catástrofe. Esperamos que lo hayas pasado bien.",
         "questions":[],
-        "buttons": [
-            {
-                "id": 1,
-                "label": "Reiniciar",
-                "data": 0
-            }
-        ],
         "image": "gracias.jpg",
         "audio": "desenlace.m4a"
     }        
