@@ -62,16 +62,11 @@
         [
             {
                 "id": 0,
-                "question_text": "Estas vías unieron Alcalá con Sevilla durante aproximadamente un siglo y desde aquí partía el pan artesano cada mañana hacia la capital.\n\n¿Sabes el nombre popular del tren de los panaderos?",
-                "answer":  "la cochinita"                   
-            },
-            {
-                "id": 1,
                 "question_text": "¿En qué año dejó de funcionar?",
                 "answer":  "1975" 
             },
             {
-                "id": 2,
+                "id": 1,
                 "question_text": "¿Cuántos panaderos realizaron el último trayecto años antes de desaparecer?",
                 "answer":  "5"                   
             }            
