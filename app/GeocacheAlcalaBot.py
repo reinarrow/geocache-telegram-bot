@@ -244,7 +244,8 @@ def send_next_step(step_id, update: Update, context: CallbackContext):
 
     # If there are questions, add a button to move to the questions after the portal narration
     questions = current_step_data.get('questions')
-    if len(questions) > 0:
+    if len(questions) > 0 and step_id != get_last_step() - 1:
+        # Do not send the button if we are moving to the last step as there is no jump to the past
         logging.info("Adding button for transition to questions")
         question_transition_button = {
                 "id": len(buttons)+1,
@@ -315,8 +316,8 @@ def answer(update: Update, context: CallbackContext) -> None:
         current_step = current_chat_data[0]
 
     # If current step is the introduction (0), just give default message
-    if current_step == 0:
-        text = "Envía /start o pulsa el botón Start abajo para iniciar el bot"
+    if current_step == 0 or current_step == None:
+        text = "Envía /start o pulsa el botón Inicio para comenzar"        
     else:
         # Intermediate step, check if there is an ongoing question and get the answer from history metadata        
         current_question = current_chat_data[1]
@@ -331,7 +332,7 @@ def answer(update: Update, context: CallbackContext) -> None:
                 break 
         if current_answer:    
             if update.message and update.message.text.lower() == current_answer.lower():
-                text = "Correcto"
+                text = "¡Correcto!"
                 correct_answer = True
             else:
                 text = "¿Estás seguro? Inténtalo de nuevo"
@@ -354,6 +355,11 @@ def answer(update: Update, context: CallbackContext) -> None:
         cur.execute("UPDATE chat_data SET current_question=%s WHERE chat_id=%s",(current_question+1, chat_id))
         if next_question:                                        
             send_question(update, context, next_question)
+        elif current_step == get_last_step() - 1:
+            # Move to last step without navigation
+            next_step = current_step + 1
+            cur.execute("UPDATE chat_data SET current_step=%s, current_question=%s WHERE chat_id=%s",(next_step, 0, chat_id))
+            send_next_step(next_step, update, context)
         else:
             start_navigation(update, context)       
         conn.commit()
@@ -392,7 +398,7 @@ def start_navigation(update: Update, context: CallbackContext):
 
         context.bot.send_message(
             update.effective_chat.id,
-            'Aquí tenéis el botón de ayuda en caso de que os perdáis. ¡Recordad no abusar de él!',
+            'Aquí tenéis el botón de ayuda a la navegación. ¡Recordad no abusar de él!',
             reply_markup=markup)   
 
 def send_question(update: Update, context: CallbackContext, question):
@@ -448,10 +454,9 @@ def on_location_found(update: Update, context: CallbackContext):
     # Remove the navigation button
     text = f'Estáis demasiado cerca del portal, es hora de que alguno de ustedes tome el mando y demuestre de que pasta está hecho. Coge el radar y continúa solo hasta el portal mientras vas narrando lo que ocurre a tus compañeros.'
     if current_step == 9:
-        text = f'Habéis encontrado la entrada de la cueva. Si tenéis el valor necesario, es hora de entrar y descubrir los planes secretos de Anthony.'        
+        text = f'Habéis encontrado la entrada de la cueva. Si tenéis el valor necesario, es hora de acercaros y descubrir los planes secretos de Anthony.'        
     update.message.reply_text(text, reply_markup=None)
     
-
     if not current_step_data:
         return
     

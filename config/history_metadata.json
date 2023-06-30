@@ -186,9 +186,15 @@
     },
     {
         "id": 10,
-        "title": "Bienvenidos",
-        "text": "Es hora de buscar el geocaché. Pulsa el botón \"Geocache encontrado\" una vez que lo encuentres para terminar la aventura.",
-        "questions":[]
+        "title": "Bienvenidos a mi cueva",
+        "text": "La puerta parece estar protegida por una clave. Es hora de buscar el geocaché junto a su entrada. Una vez que lo encontréis introducid la clave que encontraréis en su interior para poder entrar y descubrir el desenlace de esta historia.",
+        "questions":[
+            {
+                "id": 0,
+                "question_text": "",
+                "answer": "tiempo"
+            }            
+        ]
     },
     {
         "id": 11,
