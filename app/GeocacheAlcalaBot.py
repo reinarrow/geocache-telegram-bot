@@ -527,7 +527,6 @@ def send_question(update: Update, context: CallbackContext, question):
         parse_mode=ParseMode.HTML,
         reply_markup=None
     )  
-
 def location(update: Update, context: CallbackContext):
     chat_id = update.effective_chat.id
 
@@ -544,7 +543,7 @@ def location(update: Update, context: CallbackContext):
 
         elif not update.edited_message:
             # Only react to manually sent location
-            context.bot.send_message(chat_id, "Tengo problemas accediendo a tu localización en tiempo real. Por favor inténtalo de nuevo.")
+            context.bot.send_message(chat_id, "Necesito que compartas la ubicación EN TIEMPO REAL, no la actual. Si no ves esta opción, intenta deslizar hacia abajo.")
         return
     
     # Automatic location send without the initial request. Process it and update stored value.
@@ -569,7 +568,7 @@ def execute_radar(update: Update, context: CallbackContext):
     # Check if there is location stored and if the time since the last location was received to detect stopped auto location
     if not last_location or (datetime.now(timezone.utc) - last_location.edit_date).total_seconds() > 40:
         logging.error(f'No location stored for user {chat_id} or stopped real time location')
-        context.bot.send_message(chat_id, "Hay problemas con tu localización en tiempo real. Por favor compártela de nuevo")
+        context.bot.send_message(chat_id, "Hay problemas con tu localización en tiempo real. Por favor compártela de nuevo. Si la acabas de compartir, espera 30 segundos para que se estabilice y vuelve a intentarlo.")
         return
 
     user_coords = (last_location.location.latitude, last_location.location.longitude)
