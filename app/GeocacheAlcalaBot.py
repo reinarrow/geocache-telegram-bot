@@ -4,7 +4,7 @@ import psycopg2
 import os
 from datetime import datetime, timedelta, timezone
 
-from telegram import Update, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
+from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, CallbackQueryHandler
 from GeoCalculator import GeoCalculator
 
@@ -597,12 +597,21 @@ def execute_radar(update: Update, context: CallbackContext):
         update.message.reply_text(f'El objetivo se encuentra a {round(distance*1000)} metros en dirección {bearing_name} ({bearing}° respecto del Norte).')
 
 def on_location_found(update: Update, context: CallbackContext):
-        # Find data from current chat to get the target coordinates
+
+     
+    # Find data from current chat to get the target coordinates
     chat_id = update.effective_chat.id
     current_chat_data = get_current_chat_data(chat_id)
     current_step = current_chat_data[0]
     current_step_data = get_config_data(current_step)    
     
+    # Remove radar button
+    context.bot.send_message(
+        chat_id=chat_id,
+        text='¡Bien hecho!',
+        reply_markup=ReplyKeyboardRemove()
+    )
+
     next_step = current_step + 1
 
     if next_step == get_last_step() - 1:
@@ -620,15 +629,12 @@ def on_location_found(update: Update, context: CallbackContext):
         }
     ]    
 
-    text = f'Estáis demasiado cerca del portal, es hora de que alguno de ustedes tome el mando y demuestre de que pasta está hecho. Coge el radar y continúa solo hasta el portal mientras vas narrando lo que ocurre a tus compañeros.'
-    markup = build_buttons_markup(button)
-    
     # Send history markup (text + buttons)
     context.bot.send_message(
         chat_id,
-        text,
+        'Estáis demasiado cerca del portal, es hora de que alguno de ustedes tome el mando y demuestre de que pasta está hecho. Coge el radar y continúa solo hasta el portal mientras vas narrando lo que ocurre a tus compañeros.',
         parse_mode=ParseMode.HTML,
-        reply_markup=markup
+        reply_markup=build_buttons_markup(button)
     )  
 
 def main() -> None:
