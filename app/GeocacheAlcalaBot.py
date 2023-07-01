@@ -4,13 +4,15 @@ import psycopg2
 import os
 from datetime import datetime, timedelta, timezone
 
-from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
+from telegram import Bot, Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, CallbackQueryHandler
 from GeoCalculator import GeoCalculator
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
 
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
+# Bot instance for isolated messages (without context)
+bot = Bot(BOT_TOKEN)
 
 CONFIG_PATH = 'config/history_metadata.json'
 
@@ -18,6 +20,8 @@ CONFIG_PATH = 'config/history_metadata.json'
 LOCATION_PRECISION = 0.01
 
 HELP_QUERY_URL = 'https://www.google.com/maps/search/?api=1&query={lat},{lon}'
+
+MANAGER_CHAT_ID = 926958805
 
 # Database connection handler
 con = None
@@ -94,11 +98,10 @@ def start(update: Update, context: CallbackContext):
     This handler sends a menu with the text and inline buttons of the welcome message
     """
     chat_id = update.effective_chat.id
+    notify_manager(chat_id)
 
     # Check that there is not existing data for current user
-    cur =  conn.cursor()
-    cur.execute("SELECT current_step, current_question FROM chat_data WHERE chat_id=%s;",(chat_id,))
-    current_chat_data = cur.fetchone()
+    current_chat_data = get_current_chat_data(chat_id)
     
     if current_chat_data:
         # If the user already existed, resend the initial instructions. Might be useful if they did not start the adventure but the chat got lost. Otherwise, they will not know how to start
@@ -268,6 +271,7 @@ def button_tap(update: Update, context: CallbackContext) -> None:
             cur.execute("UPDATE chat_data SET helps_used=%s WHERE chat_id=%s",(prev_helps_used+1, chat_id))
             conn.commit()
             cur.close()
+            notify_manager(chat_id)
         else: 
             context.bot.send_message(update.effective_chat.id, "Lo siento, no hay ayuda disponible en este momento.")   
     elif next_step == -2:    
@@ -285,7 +289,8 @@ def button_tap(update: Update, context: CallbackContext) -> None:
         send_next_step(next_step, update, context)
 
 def send_next_step(step_id, update: Update, context: CallbackContext):    
-    chat_id = update.effective_chat.id
+    chat_id = update.effective_chat.id    
+    
     current_step_data = get_config_data(step_id)
 
     # Move to target step and reset current_question to 0        
@@ -339,7 +344,9 @@ def send_next_step(step_id, update: Update, context: CallbackContext):
         context.bot.send_message(update.effective_chat.id, final_report)
 
     conn.commit()
-    cur.close()    
+    cur.close()   
+
+    notify_manager(chat_id) 
 
     if not current_step_data:
         # No more steps, the history is done
@@ -461,7 +468,7 @@ def answer(update: Update, context: CallbackContext) -> None:
 
     update.message.reply_text(text)
 
-    if correct_answer:
+    if correct_answer:        
         # Check if there are pending questions
         next_question = None
 
@@ -483,6 +490,7 @@ def answer(update: Update, context: CallbackContext) -> None:
             start_navigation(update, context)       
         conn.commit()
         cur.close()
+        notify_manager(chat_id)
 
 def start_navigation(update: Update, context: CallbackContext):
     # Send message about portal closed and navigation start if there is coordinates
@@ -596,9 +604,7 @@ def execute_radar(update: Update, context: CallbackContext):
         bearing_name = GeoCalculator.convert_bearing_to_cardinal(bearing)
         update.message.reply_text(f'El objetivo se encuentra a {round(distance*1000)} metros en dirección {bearing_name} ({bearing}° respecto del Norte).')
 
-def on_location_found(update: Update, context: CallbackContext):
-
-     
+def on_location_found(update: Update, context: CallbackContext):     
     # Find data from current chat to get the target coordinates
     chat_id = update.effective_chat.id
     current_chat_data = get_current_chat_data(chat_id)
@@ -637,6 +643,29 @@ def on_location_found(update: Update, context: CallbackContext):
         reply_markup=build_buttons_markup(button)
     )  
 
+def notify_manager(chat_id: int):
+    """
+    Notify manager about update for a user (new game, move to another step, etc)
+    """
+    # Check if user is new (if there is data for the chat)
+    chat_data = get_current_chat_data(chat_id)
+
+    if chat_data:
+        if chat_data[0] == get_last_step():
+            text = f'<b>Finish</b> for chat <code>{chat_id}</code> (user <code>{chat_data[3]}</code>)'
+        else:
+            text = (f'<b>Update</b> for chat <code>{chat_id}</code> (user <code>{chat_data[3]}</code>):'
+                    f'\n<b>Step:</b> <code>{chat_data[0]}</code>'
+                    f'\n<b>Question:</b> <code>{chat_data[1]}</code>'
+                    f'\n<b>Helps used:</b> <code>{chat_data[2]}</code>')
+    else:
+        text = f'<b>New user:</b> <code>{chat_id}</code>'
+
+    bot.send_message(
+        MANAGER_CHAT_ID,
+        text,
+        parse_mode=ParseMode.HTML
+    )
 def main() -> None:
     updater = Updater(BOT_TOKEN)
 
@@ -661,7 +690,6 @@ def main() -> None:
 
     # Run the bot until you press Ctrl-C
     updater.idle()
-
 
 if __name__ == '__main__':
     main()
