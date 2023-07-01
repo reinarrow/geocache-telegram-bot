@@ -501,7 +501,7 @@ def start_navigation(update: Update, context: CallbackContext):
         reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True, resize_keyboard=True)
         context.bot.send_message(
             update.effective_chat.id,
-            f'Es hora de navegar al siguiente objetivo. Si no veis el radar, pulsad el botón con cuatro cuadrados junto al campo de texto del chat.',
+            f'Es hora de navegar al siguiente objetivo. Si no veis el radar, pulsad el botón con cuatro cuadrados junto al campo de texto del chat. Si la posición del radar no se actualiza, abrid la ubicación que se está compartiendo pulsando en \"En tiempo real\" para forzar a que se actualice y luego usar el radar.',
             reply_markup=reply_markup)  
 
         # Send help button
