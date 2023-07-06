@@ -119,7 +119,7 @@ def request_name(update: Update, context: CallbackContext):
     global requesting_name
     requesting_name= True
 
-    name_request = "Antes de empezar, ¿con qué nombre debo dirigirme a vosotros? Este nombre se utilizará al final para la tabla de clasificación por tiempos."
+    name_request = "Hola, soy GeocacheBot. Mi propósito es guiarte a lo largo de esta aventura intertemporal hasta entontrar el Geocaché final. Si no has llegado aquí intencionalmente, quizás quieras visitar la web de Geocaching.com y aprender en qué consiste este juego. Por favor, no eliminar el código. \n\nAntes de empezar, ¿con qué nombre debo dirigirme a ti? Este nombre se utilizará al final para la tabla de clasificación por tiempos."
     context.bot.send_message(update.effective_chat.id, name_request)
 
 def verify_name(name: str, update: Update, context: CallbackContext):
@@ -194,7 +194,7 @@ def request_location(update: Update, context: CallbackContext):
     current_chat_data = get_current_chat_data(update.effective_chat.id)
     username = current_chat_data[3]
 
-    text = f"De acuerdo, {username}. Para poder ayudaros durante la búsqueda de las localizaciones, necesito acceso a vuestra ubicación en tiempo real. Para ello, pulsa en compartir, busca la opción de ubicación y marca la opción de compartir la ubicación en tiempo real (no solo la posición actual). Se te pedirá elegir el tiempo que quieres compartir la ubicación. Te recomiendo elegir 8 horas para no tener problemas. Ten en cuenta que puedes dejar de compartirla en cualquier momento si lo necesitas."
+    text = f"De acuerdo, {username}. Para poder ayudaros durante la búsqueda de las localizaciones y determinar que estáis en el lugar correcto, necesito acceso a vuestra ubicación en tiempo real. Como desarrolladores de este caché, nos aseguramos de que la localización solo se ponga a disposición del servidor de Telegram y no sea accesible por ninguna persona o entidad. Si no te sientes cómodo con esto, puedes optar por no continuar. \n\nPara compartir tu ubicación, pulsa en compartir, busca la opción de ubicación y marca la opción de compartir la ubicación en tiempo real (no solo la posición actual). Se te pedirá elegir el tiempo que quieres compartir la ubicación. Te recomiendo elegir 8 horas para que no se interrumpa en mitar del juego. Ten en cuenta que puedes dejar de compartirla en cualquier momento si lo necesitas."
     context.bot.send_message(update.effective_chat.id, text)    
 
 def get_current_chat_data(chat_id):
