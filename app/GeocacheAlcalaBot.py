@@ -8,7 +8,7 @@ from telegram import Bot, Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, Keyb
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, CallbackQueryHandler
 from GeoCalculator import GeoCalculator
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(name)s %(message)s')
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
 
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 # Bot instance for isolated messages (without context)
