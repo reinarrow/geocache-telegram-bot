@@ -398,6 +398,7 @@ def send_media(context, chat_id, type, path):
     :param type: Type of file. Can be 'audio' or 'photo'
     :param path: Relative path to the file to be sent
     """
+    path = 'media/' + path
     try:
         with open(path, "rb") as file:
             if(type == 'photo'):
@@ -411,7 +412,7 @@ def send_media(context, chat_id, type, path):
                     audio = file
                 )
     except FileNotFoundError:
-        logging.error(f"File not found: {file}")
+        logging.error(f"File not found: {path}")
     except Exception as e:
         logging.error(f"An error occurred: {e}")
 
