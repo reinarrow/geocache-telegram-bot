@@ -22,10 +22,6 @@ services:
     restart: always
     env_file:
       - .env
-    volumes:
-      - ./config:/app/config
-      - ./media/image:/app/image
-      - ./media/audio:/app/audio
     depends_on:
       - db
 
