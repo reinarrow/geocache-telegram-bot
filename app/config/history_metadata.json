@@ -199,7 +199,7 @@
     {
         "id": 11,
         "title": "GRACIAS",
-        "text": "El mundo te agradece tu labor evitando la catástrofe. Esperamos que lo hayas pasado bien.",
+        "text": "El mundo te agradece tu labor evitando la catástrofe. Esperamos que lo hayas pasado bien.\n\n ¿Quieres apoyar mi trabajo? -> <a href='https://www.buymeacoffee.com/reinarrow'>buymeacoffee.com/reinarrow</a>",
         "questions":[],
         "image": "gracias.jpg",
         "audio": "desenlace.m4a"
