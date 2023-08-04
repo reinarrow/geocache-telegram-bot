@@ -1,5 +1,5 @@
 ## Compile
-`docker build reinarrow/geocache-telegram-bot:latest`
+`docker build -t reinarrow/geocache-telegram-bot:latest .`
 
 ## Push 
 `docker push reinarrow/geocache-telegram-bot:latest`
